@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Solo Leveling: Shadow Gates</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-main: #0a0c14;
+            --bg-card: #121726;
+            --bg-card-hover: #1a2238;
+            --accent-cyan: #00f0ff;
+            --accent-blue: #0072ff;
+            --accent-purple: #9d4edd;
+            --accent-gold: #ffd700;
+            --accent-red: #ff3366;
+            --accent-green: #00ff88;
+            --text-main: #f0f4fc;
+            --text-muted: #7e8ba6;
+            --border-color: #232d4b;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            font-size: 14px;
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 75px;
+        }
+
+        /* Top Header */
+        .header-bar {
+            background: rgba(18, 23, 38, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero-summary {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .hero-info-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-rank {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--accent-purple);
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .wallet-gold {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 13px;
+        }
+
+        /* Container & Tabs */
+        .main-container {
+            flex: 1;
+            padding: 14px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(18, 23, 38, 0.98);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 20%;
+            height: 100%;
+            transition: all 0.2s;
+        }
+
+        .nav-button .nav-icon {
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .nav-button.active {
+            color: var(--accent-cyan);
+        }
+
+        .nav-button.active .nav-icon {
+            transform: scale(1.15);
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Gate List View */
+        .gate-card {
+            background: linear-gradient(145deg, #13192c, #0e1322);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+
+        .gate-card:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .gate-card.locked {
+            opacity: 0.55;
+            filter: grayscale(0.6);
+        }
+
+        .gate-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .gate-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .gate-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .btn-enter-gate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #000;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-enter-gate:active {
+            opacity: 0.8;
+        }
+
+        .btn-enter-gate:disabled {
+            background: #252e42;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* COMBAT ARENA VIEW */
+        #view-combat-arena {
+            display: none;
+        }
+
+        .combat-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161d30;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        .combat-stage-badge {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .btn-exit-combat {
+            background: rgba(255, 51, 102, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-exit-combat:active {
+            background: var(--accent-red);
+            color: #fff;
+        }
+
+        .turn-counter-badge {
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* 3-Zone Combat Layout */
+        .combat-arena-grid {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 8px;
+            align-items: center;
+            background: #0d1220;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 8px;
+            margin-bottom: 10px;
+        }
+
+        .combat-fighter-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 4px;
+        }
+
+        .fighter-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .fighter-avatar.enemy-av {
+            background: linear-gradient(135deg, #ff3366, #5c0d23);
+            border: 2px solid var(--accent-red);
+        }
+
+        .fighter-avatar.hero-av {
+            background: linear-gradient(135deg, #0072ff, #00f0ff);
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .fighter-name {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 105px;
+        }
+
+        .enemy-intent-badge {
+            background: rgba(255, 51, 102, 0.2);
+            border: 1px solid rgba(255, 51, 102, 0.5);
+            color: #ff99b3;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 2px;
+            max-width: 110px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* Center VS & Thinking Timer */
+        .combat-center-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .vs-neon {
+            font-size: 18px;
+            font-weight: 900;
+            font-style: italic;
+            color: #fff;
+            text-shadow: 0 0 8px var(--accent-cyan), 0 0 16px var(--accent-blue);
+        }
+
+        .center-timer-card {
+            width: 100%;
+            background: #141b2e;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 8px;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .center-timer-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .center-timer-val {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--accent-cyan);
+            font-family: monospace;
+        }
+
+        .center-timer-bar {
+            width: 100%;
+            height: 4px;
+            background: #252f4a;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+
+        .center-timer-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            transition: width 0.1s linear;
+        }
+
+        /* Bars (HP, MP) */
+        .stat-bar-box {
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .stat-bar-track {
+            height: 8px;
+            background: #1a2238;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.25s ease;
+        }
+
+        .fill-hp { background: linear-gradient(90deg, #ff3366, #ff6b8b); }
+        .fill-mp { background: linear-gradient(90deg, #0072ff, #00f0ff); }
+        .fill-exp { background: linear-gradient(90deg, #ffd700, #ffaa00); }
+
+        .stat-bar-text {
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 1px;
+            color: var(--text-muted);
+        }
+
+        /* Combat Log */
+        .combat-log-card {
+            background: #0d1220;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            height: 85px;
+            padding: 8px;
+            overflow-y: auto;
+            font-size: 11px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .log-entry { color: #b3c0dc; }
+        .log-entry-damage { color: #ff6688; font-weight: 600; }
+        .log-entry-heal { color: #00ff88; font-weight: 600; }
+        .log-entry-guard { color: #ffd700; font-weight: 600; }
+        .log-entry-qte { color: var(--accent-cyan); font-weight: 700; }
+
+        /* Universal Action Buttons */
+        .combat-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .btn-action {
+            background: #172036;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            transition: all 0.15s;
+        }
+
+        .btn-action:active:not(:disabled) {
+            transform: scale(0.97);
+            background: #202b48;
+        }
+
+        .btn-action:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            border-color: #202538;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(135deg, rgba(0, 114, 255, 0.3), rgba(0, 240, 255, 0.3));
+            border-color: var(--accent-cyan);
+            color: #fff;
+        }
+
+        .btn-action-guard {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.2));
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .btn-action-ult {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.35), rgba(255, 51, 102, 0.35));
+            border-color: var(--accent-purple);
+            color: #fff;
+        }
+
+        .skill-subtext {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* QTE Canvas Overlay */
+        #qte-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 7, 12, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .qte-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .qte-instruction {
+            font-size: 13px;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        #qte-canvas {
+            background: #101626;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            touch-action: none;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Hero / Stats Tab */
+        .class-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .class-btn {
+            background: #141b2e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #b3c0dc;
+            padding: 8px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .class-btn.active {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .stat-alloc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-alloc-name {
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-stepper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stepper-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #1b233a;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .stepper-btn:active {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        .stat-alloc-val {
+            font-size: 14px;
+            font-weight: 700;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .stat-pending-val {
+            color: var(--accent-green);
+            font-size: 12px;
+        }
+
+        .parameters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .parameter-badge {
+            background: #0f1424;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+        }
+
+        .param-name { color: var(--text-muted); }
+        .param-val { font-weight: 700; color: #fff; }
+
+        /* Forge Tab */
+        .forge-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .forge-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #141b2e;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .forge-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .forge-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #1b233a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-upgrade {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-upgrade:disabled {
+            background: #252f4a;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Buttons generic */
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-block {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: #1c2438;
+            border: 1px solid var(--border-color);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: rgba(255, 51, 102, 0.2);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header bar -->
+    <header class="header-bar">
+        <div class="hero-summary">
+            <div class="hero-avatar" id="hero-header-avatar">⚔️</div>
+            <div class="hero-info-header">
+                <h2>
+                    <span id="hero-header-name">Джин-Ву</span>
+                    <span class="badge-rank" id="hero-header-rank">E-РАНГ</span>
+                </h2>
+                <div style="font-size: 11px; color: var(--text-muted);">
+                    Уровень <span id="hero-header-level" style="color:#fff; font-weight:700;">1</span> 
+                    (<span id="hero-header-class">Танк</span>)
+                </div>
+            </div>
+        </div>
+        <div class="wallet-gold">
+            <span>🪙</span>
+            <span id="wallet-gold-val">100</span>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <!-- TAB 1: GATES (ВРАТА) -->
+        <section id="tab-gates" class="tab-content active">
+            <!-- Normal Gate Select Screen -->
+            <div id="view-gates-list">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">⛩️ Врата Подземелий</span>
+                        <span style="font-size:11px; color:var(--accent-cyan);">Ранг E – SSS</span>
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+                        Врата разделены на 10 рангов (по 10 этапов). На 10-м этапе вас ждёт смертоносный Босс Врат.
+                    </p>
+                    <div id="gates-container"></div>
+                </div>
+            </div>
+
+            <!-- Gate Combat Screen -->
+            <div id="view-combat-arena">
+                <div class="combat-top-bar">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 800; color: #fff;" id="combat-gate-title">Лесные Врата</div>
+                        <div class="combat-stage-badge" id="combat-stage-counter">ЭТАП 1/10</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="turn-counter-badge" id="combat-turn-badge">⚔️ ХОД 1</span>
+                        <button class="btn-exit-combat" id="btn-exit-combat" onclick="window.game.exitCombat()">🚪 Выход</button>
+                    </div>
+                </div>
+
+                <!-- 3-Zone Combat Arena Grid -->
+                <div class="combat-arena-grid">
+                    <!-- Zone 1: Enemy (Left) -->
+                    <div class="combat-fighter-col">
+                        <div class="fighter-avatar enemy-av" id="enemy-avatar-icon">👺</div>
+                        <div class="fighter-name" id="enemy-name">Лесной Гоблин</div>
+                        <div class="stat-bar-box">
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill fill-hp" id="enemy-hp-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="stat-bar-text" id="enemy-hp-text">120 / 120</div>
+                        </div>
+                        <div class="enemy-intent-badge" id="enemy-intent-badge">⚔️ Выпад (1.0x)</div>
+                    </div>
+
+                    <!-- Zone 2: VS & Thinking Timer (Center) -->
+                    <div class="combat-center-col">
+                        <div class="vs-neon">VS</div>
+                        <div class="center-timer-card">
+                            <div class="center-timer-label">Раздумье</div>
+                            <div class="center-timer-val" id="center-timer-text">20.0s</div>
+                            <div class="center-timer-bar">
+                                <div class="center-timer-fill" id="center-timer-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zone 3: Hero (Right) -->
+                    <div class="combat-fighter-col">
+                        <div class="fighter-avatar hero-av" id="hero-combat-avatar">🛡️</div>
+                        <div class="fighter-name" id="hero-combat-name">Джин-Ву</div>
+                        <div class="stat-bar-box">
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill fill-hp" id="hero-hp-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="stat-bar-text" id="hero-hp-text">350 / 350</div>
+                        </div>
+                        <div class="stat-bar-box" style="margin-top:2px;">
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill fill-mp" id="hero-mp-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="stat-bar-text" id="hero-mp-text">100 / 100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combat Log -->
+                <div class="combat-log-card" id="combat-log-container">
+                    <div class="log-entry">Подземелье открыто. Монстр готовится к первой атаке!</div>
+                </div>
+
+                <!-- Action Buttons: 2 universal + 3 class skills -->
+                <div class="combat-actions-grid">
+                    <button class="btn-action btn-action-primary" id="btn-act-attack" onclick="window.game.handlePlayerAction('basic_attack')">
+                        <span>⚔️ Базовая атака</span>
+                        <span class="skill-subtext">Физ. урон (0 MP)</span>
+                    </button>
+                    <button class="btn-action btn-action-guard" id="btn-act-guard" onclick="window.game.handlePlayerAction('guard')">
+                        <span>🛡️ Защита (100%)</span>
+                        <span class="skill-subtext">Блок 100% урона + Мана</span>
+                    </button>
+                    <button class="btn-action" id="btn-act-skill-1" onclick="window.game.handlePlayerAction('skill_1')">
+                        <span id="skill-1-name">Навык 1</span>
+                        <span class="skill-subtext" id="skill-1-sub">20 MP</span>
+                    </button>
+                    <button class="btn-action" id="btn-act-skill-2" onclick="window.game.handlePlayerAction('skill_2')">
+                        <span id="skill-2-name">Навык 2</span>
+                        <span class="skill-subtext" id="skill-2-sub">30 MP</span>
+                    </button>
+                    <button class="btn-action btn-action-ult" id="btn-act-skill-3" onclick="window.game.handlePlayerAction('skill_3')">
+                        <span id="skill-3-name">⚡ УЛЬТИМЕЙТ (QTE)</span>
+                        <span class="skill-subtext" id="skill-3-sub">Требуется точный свайп • 45 MP</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: PARTY (ПАТИ) -->
+        <section id="tab-party" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🛡️ Отряд и Тактика</span>
+                    <span id="party-tactic-badge" style="font-size:11px; font-weight:700; color:var(--accent-cyan);">АВАНГАРД</span>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+                    Выбирайте боевую позицию отряда в зависимости от вашего класса и противника.
+                </p>
+                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                    <button class="btn-block btn-secondary" onclick="window.game.setTactic('vanguard')">🛡️ В Авангарде (+15% Защиты)</button>
+                    <button class="btn-block btn-secondary" onclick="window.game.setTactic('rearguard')">🏹 В Арьергарде (+15% Атаки)</button>
+                </div>
+                <div style="font-size:13px; font-weight:700; margin-bottom:6px;">Члены рейда (Симуляция пати):</div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <div class="forge-item">
+                        <div class="forge-info">
+                            <span style="font-size:22px;">🧙‍♂️</span>
+                            <div>
+                                <div style="font-weight:700; font-size:12px;">Мин Бён-Гу (Саппорт)</div>
+                                <div style="font-size:10px; color:var(--text-muted);">Пассивный реген +2% MP в ход</div>
+                            </div>
+                        </div>
+                        <span style="color:var(--accent-green); font-size:11px; font-weight:700;">В СТРОЮ</span>
+                    </div>
+                    <div class="forge-item">
+                        <div class="forge-info">
+                            <span style="font-size:22px;">🗡️</span>
+                            <div>
+                                <div style="font-weight:700; font-size:12px;">Сон Чи-Ху (Следопыт)</div>
+                                <div style="font-size:10px; color:var(--text-muted);">+5% к Точности отряда</div>
+                            </div>
+                        </div>
+                        <span style="color:var(--accent-green); font-size:11px; font-weight:700;">В СТРОЮ</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: FORGE (КУЗНИЦА) -->
+        <section id="tab-forge" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🔨 Кузница Снаряжения</span>
+                    <span style="font-size:11px; color:var(--accent-gold);">Улучшение экипировки</span>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+                    Закаляйте оружие и доспехи за золото, повышая 13 боевых параметров вашего охотника.
+                </p>
+                <div class="forge-grid" id="forge-items-container"></div>
+            </div>
+        </section>
+
+        <!-- TAB 4: HERO (ГЕРОЙ) -->
+        <section id="tab-hero" class="tab-content">
+            <!-- Class Switching -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">👤 Выбор Специализации</span>
+                    <span style="font-size:11px; color:var(--accent-cyan);">Свободный выбор</span>
+                </div>
+                <div class="class-selector-grid">
+                    <button class="class-btn" id="btn-class-tank" onclick="window.game.switchClass('tank')">🛡️ Танк</button>
+                    <button class="class-btn" id="btn-class-healer" onclick="window.game.switchClass('healer')">💚 Хил</button>
+                    <button class="class-btn" id="btn-class-mage" onclick="window.game.switchClass('mage')">🔥 Маг</button>
+                    <button class="class-btn" id="btn-class-assassin" onclick="window.game.switchClass('assassin')">🗡️ Ассасин</button>
+                </div>
+                <div id="class-desc-box" style="font-size:11px; color:var(--text-muted); background:#0c101c; padding:8px; border-radius:6px;">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+
+            <!-- 5 Core Attributes Stepper -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">⚡ Характеристики</span>
+                    <span style="font-size:12px; font-weight:800; color:var(--accent-gold);">
+                        Очков: <span id="free-points-val">0</span>
+                    </span>
+                </div>
+                <div id="stat-allocators-list"></div>
+                <div class="btn-group">
+                    <button class="btn-block btn-primary" id="btn-apply-stats" onclick="window.game.applyPendingStats()" disabled>Применить</button>
+                    <button class="btn-block btn-secondary" id="btn-cancel-stats" onclick="window.game.cancelPendingStats()" disabled>Сброс</button>
+                </div>
+            </div>
+
+            <!-- 13 Combat Parameters -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📊 13 Боевых Параметров</span>
+                    <span style="font-size:10px; color:var(--text-muted);">Итоговый расчёт</span>
+                </div>
+                <div class="parameters-grid" id="parameters-display-grid"></div>
+            </div>
+        </section>
+
+        <!-- TAB 5: MORE (ЕЩЁ) -->
+        <section id="tab-more" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💾 Слоты Сохранений</span>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+                    Вы можете переключаться между 3 персонажами в локальном хранилище.
+                </p>
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                    <button class="btn-block btn-secondary" id="slot-btn-1" onclick="window.game.changeSlot(1)">Слот 1</button>
+                    <button class="btn-block btn-secondary" id="slot-btn-2" onclick="window.game.changeSlot(2)">Слот 2</button>
+                    <button class="btn-block btn-secondary" id="slot-btn-3" onclick="window.game.changeSlot(3)">Слот 3</button>
+                </div>
+                <button class="btn-block btn-danger" onclick="window.game.resetCurrentSlotData()">⚠️ Сбросить текущий слот</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">⚙️ Настройки Telegram</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span>Тактильная отдача (Вибрация)</span>
+                    <button class="btn-block btn-secondary" style="max-width:80px;" id="btn-toggle-haptic" onclick="window.game.toggleHaptic()">ВКЛ</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- QTE Overlay Canvas -->
+    <div id="qte-overlay">
+        <div class="qte-title">⚡ УЛЬТИМАТИВНЫЙ РАЗРЕЗ</div>
+        <div class="qte-instruction">Проведите линию через светящиеся руны!</div>
+        <canvas id="qte-canvas" width="300" height="300"></canvas>
+    </div>
+
+    <!-- Bottom Navigation Bar (5 tabs) -->
+    <nav class="bottom-nav">
+        <button class="nav-button active" onclick="window.game.switchTab('gates')">
+            <span class="nav-icon">⛩️</span>
+            <span>Врата</span>
+        </button>
+        <button class="nav-button" onclick="window.game.switchTab('party')">
+            <span class="nav-icon">🛡️</span>
+            <span>Пати</span>
+        </button>
+        <button class="nav-button" onclick="window.game.switchTab('forge')">
+            <span class="nav-icon">🔨</span>
+            <span>Кузница</span>
+        </button>
+        <button class="nav-button" onclick="window.game.switchTab('hero')">
+            <span class="nav-icon">👤</span>
+            <span>Герой</span>
+        </button>
+        <button class="nav-button" onclick="window.game.switchTab('more')">
+            <span class="nav-icon">⚙️</span>
+            <span>Ещё</span>
+        </button>
+    </nav>
+
+    <script>
+    /* =========================================================================
+       SOLO LEVELING MINI-APP ENGINE - COMPLETE BUG-FREE LOGIC
+       ========================================================================= */
+    (function () {
+        'use strict';
+
+        // 1. Telegram WebApp Integration
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            try {
+                tg.ready();
+                tg.expand();
+            } catch (e) {
+                console.warn('Telegram SDK initialization:', e);
+            }
+        }
+
+        function triggerHaptic(type = 'medium') {
+            if (!state.haptics) return;
+            if (tg?.HapticFeedback) {
+                if (type === 'success' || type === 'error' || type === 'warning') {
+                    tg.HapticFeedback.notificationOccurred(type);
+                } else {
+                    tg.HapticFeedback.impactOccurred(type);
+                }
+            }
+        }
+
+        // 2. Constants & Data Mapping
+        const RANKS = [
+            { minLv: 1,  name: 'E-РАНГ', color: '#8e9aaf' },
+            { minLv: 11, name: 'D-РАНГ', color: '#52b788' },
+            { minLv: 21, name: 'C-РАНГ', color: '#2a9d8f' },
+            { minLv: 31, name: 'B-РАНГ', color: '#0072ff' },
+            { minLv: 41, name: 'A-РАНГ', color: '#9d4edd' },
+            { minLv: 51, name: 'S-РАНГ', color: '#ff3366' },
+            { minLv: 61, name: 'SS-РАНГ', color: '#ff0055' },
+            { minLv: 71, name: 'SSS-РАНГ', color: '#ffd700' },
+            { minLv: 81, name: 'МОНАРХ', color: '#7928ca' },
+            { minLv: 91, name: 'БОЖЕСТВЕННЫЙ', color: '#00f0ff' }
+        ];
+
+        const GATES = [
+            { id: 1,  name: 'Лесные Врата', minLv: 1, boss: 'Король Гоблинов', bossIcon: '👑', mobIcon: '👺', desc: 'Заповедник низших монстров.' },
+            { id: 2,  name: 'Катакомбы Нежити', minLv: 11, boss: 'Древний Лич', bossIcon: '💀', mobIcon: '🧟', desc: 'Уязвимы к святому урону Целителя (+35%).' },
+            { id: 3,  name: 'Пещеры Орков', minLv: 21, boss: 'Вождь Орды', bossIcon: '🧌', mobIcon: '👹', desc: 'Свирепые орки с тяжелыми топорами.' },
+            { id: 4,  name: 'Вулканический Разлом', minLv: 31, boss: 'Голем Лавы', bossIcon: '🌋', mobIcon: '🔥', desc: 'Пылающие магматические элементали.' },
+            { id: 5,  name: 'Ледяная Цитадель', minLv: 41, boss: 'Снежная Королева', bossIcon: '❄️', mobIcon: '🐺', desc: 'Ледяные пустоши и вечный буран.' },
+            { id: 6,  name: 'Врата Бездны', minLv: 51, boss: 'Владыка Бездны', bossIcon: '👾', mobIcon: '👁️', desc: 'Разлом тьмы, искажающий реальность.' },
+            { id: 7,  name: 'Небесный Разлом', minLv: 61, boss: 'Архангел Хаоса', bossIcon: '🪽', mobIcon: '⚔️', desc: 'Небесные стражи сокрушительной мощи.' },
+            { id: 8,  name: 'Логово Древних', minLv: 71, boss: 'Прародитель Драконов', bossIcon: '🐉', mobIcon: '🦎', desc: 'Древние драконы, испепеляющие всё на пути.' },
+            { id: 9,  name: 'Теневое Царство', minLv: 81, boss: 'Монарх Теней', bossIcon: '👤', mobIcon: '👥', desc: 'Истинная армия теней верховного лорда.' },
+            { id: 10, name: 'Астральный Предел', minLv: 91, boss: 'Абсолют', bossIcon: '🌌', mobIcon: '✨', desc: 'Финал познания вселенной и абсолютной силы.' }
+        ];
+
+        const CLASS_CONFIGS = {
+            tank: {
+                name: 'Танк',
+                icon: '🛡️',
+                desc: 'Преимущество: +50% урона по Ассасинам. Слабость: +20% входящего урона от Магов.',
+                hpMult: 1.25,
+                defMult: 1.30,
+                dmgMult: 1.0,
+                mpMult: 1.0,
+                skills: [
+                    { id: 'skill_1', name: '🛡️ Укрепление', mp: 20, desc: '+50% Защиты на этот ход' },
+                    { id: 'skill_2', name: '💥 Отражение', mp: 30, desc: '1.2x урон и контратака' },
+                    { id: 'skill_3', name: '⚡ Сокрушительный Рывок', mp: 35, desc: 'QTE: 2.2x урон + Оглушение' }
+                ]
+            },
+            healer: {
+                name: 'Целитель',
+                icon: '💚',
+                desc: 'Нейтральный баланс. +50% получаемого золота. +35% святого урона по Нежити.',
+                hpMult: 1.05,
+                defMult: 1.0,
+                dmgMult: 1.0,
+                mpMult: 1.25,
+                skills: [
+                    { id: 'skill_1', name: '✨ Благословение', mp: 20, desc: '+40 MP и малый реген' },
+                    { id: 'skill_2', name: '💖 Исцеление', mp: 25, desc: 'Восстанавливает +30% HP' },
+                    { id: 'skill_3', name: '⚡ Небесный Каратель', mp: 40, desc: 'QTE: 2.0x чистый святой урон' }
+                ]
+            },
+            mage: {
+                name: 'Маг',
+                icon: '🔥',
+                desc: 'Преимущество: +50% урона по Танкам. Слабость: +20% входящего урона от Ассасинов.',
+                hpMult: 0.90,
+                defMult: 0.90,
+                dmgMult: 1.20,
+                mpMult: 1.35,
+                skills: [
+                    { id: 'skill_1', name: '🔥 Огненная Стрела', mp: 25, desc: '1.6x маг. урон' },
+                    { id: 'skill_2', name: '❄️ Глубокая Заморозка', mp: 35, desc: '1.3x урон + Оглушение' },
+                    { id: 'skill_3', name: '⚡ Астральный Взрыв', mp: 50, desc: 'QTE: 2.8x разрушительный урон' }
+                ]
+            },
+            assassin: {
+                name: 'Ассасин',
+                icon: '🗡️',
+                desc: 'Преимущество: +50% урона по Магам. Слабость: +20% входящего урона от Танков.',
+                hpMult: 0.95,
+                defMult: 0.90,
+                dmgMult: 1.15,
+                mpMult: 1.0,
+                skills: [
+                    { id: 'skill_1', name: '🗡️ Удар в Спину', mp: 20, desc: '1.8x критический выпад' },
+                    { id: 'skill_2', name: '☠️ Теневой Яд', mp: 25, desc: '1.4x урон + отравление' },
+                    { id: 'skill_3', name: '⚡ Танец Теней', mp: 45, desc: 'QTE: 3.0x смертоносная серия' }
+                ]
+            }
+        };
+
+        // 3. State Management with Multi-slot Support
+        const DEFAULT_STATE = {
+            slotId: 1,
+            name: 'Джин-Ву',
+            level: 1,
+            exp: 0,
+            gold: 250,
+            charClass: 'tank',
+            tactic: 'vanguard', // 'vanguard' | 'rearguard'
+            stats: { str: 10, agi: 10, end: 10, int: 10, per: 10 },
+            freePoints: 10,
+            equip: { weapon: 0, armor: 0, helmet: 0, ring: 0 },
+            haptics: true
+        };
+
+        let currentSlot = 1;
+        let state = {};
+        let pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
+        let computed = {};
+
+        // Combat Session State
+        const TURN_TIME_SEC = 20.0;
+        let activeCombat = null;
+        let combatTimerId = null;
+        let timerEndTimestamp = 0;
+        let isActionLocked = false;
+
+        function loadSlot(slotId) {
+            currentSlot = slotId;
+            const key = `sl_save_slot_${slotId}`;
+            const raw = localStorage.getItem(key);
+            if (raw) {
+                try {
+                    state = Object.assign({}, DEFAULT_STATE, JSON.parse(raw));
+                } catch (e) {
+                    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+                }
+            } else {
+                state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            }
+            state.slotId = slotId;
+            pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
+            recalcParameters();
+            saveCurrentSlot();
+        }
+
+        function saveCurrentSlot() {
+            const key = `sl_save_slot_${currentSlot}`;
+            localStorage.setItem(key, JSON.stringify(state));
+        }
+
+        // 4. Combat Parameter Calculation Engine (13 Parameters)
+        function recalcParameters() {
+            const cfg = CLASS_CONFIGS[state.charClass];
+            const s = {
+                str: state.stats.str + pendingAlloc.str,
+                agi: state.stats.agi + pendingAlloc.agi,
+                end: state.stats.end + pendingAlloc.end,
+                int: state.stats.int + pendingAlloc.int,
+                per: state.stats.per + pendingAlloc.per
+            };
+
+            const eq = state.equip;
+            const tacticAtkMult = state.tactic === 'rearguard' ? 1.15 : 1.0;
+            const tacticDefMult = state.tactic === 'vanguard' ? 1.15 : 1.0;
+
+            const maxHp = Math.round((150 + (s.end * 20) + (state.level * 10)) * cfg.hpMult);
+            const maxMp = Math.round((100 + (s.int * 15) + (eq.ring * 25)) * cfg.mpMult);
+            const attack = Math.round(((10 + (s.str * 3) + (eq.weapon * 8)) * cfg.dmgMult) * tacticAtkMult);
+            const defense = Math.round(((5 + (s.str * 1.5) + (s.end * 1.5) + (eq.armor * 7)) * cfg.defMult) * tacticDefMult);
+            const crit = Math.min(75, Math.round(5 + (s.agi * 0.4) + (eq.helmet * 1.5)));
+            const critDmg = Math.round(150 + (s.per * 3));
+            const accuracy = Math.min(100, Math.round(85 + (s.per * 0.6)));
+            const evasion = Math.min(50, Math.round(5 + (s.agi * 0.5)));
+            const dmgResist = Math.min(60, Math.round(s.end * 0.3));
+            const speed = Math.round(10 + (s.agi * 0.5));
+            const reaction = Math.round(10 + s.agi + s.per);
+            const penetration = Math.min(50, Math.round((s.str * 0.5) + (s.per * 0.5)));
+            const skillPower = Math.round(s.int * 2);
+            const vampirism = Math.min(30, Math.round(s.int * 0.2));
+
+            computed = {
+                maxHp, maxMp, attack, defense, crit, critDmg,
+                accuracy, evasion, dmgResist, speed, reaction,
+                penetration, skillPower, vampirism
+            };
+        }
+
+        function getHeroRank(lv) {
+            for (let i = RANKS.length - 1; i >= 0; i--) {
+                if (lv >= RANKS[i].minLv) return RANKS[i];
+            }
+            return RANKS[0];
+        }
+
+        // 5. Gate Generation & Stage Spawning
+        function getMonsterForStage(gate, stage) {
+            const isBoss = stage === 10;
+            const levelScale = gate.minLv + stage - 1;
+            const hpBase = (100 + (levelScale * 40)) * (isBoss ? 2.8 : 1.0);
+            const atkBase = (15 + (levelScale * 7)) * (isBoss ? 1.4 : 1.0);
+            const defBase = (5 + (levelScale * 3)) * (isBoss ? 1.3 : 1.0);
+
+            // Rock-paper-scissors class assignment for mob
+            const types = ['tank', 'mage', 'assassin'];
+            const mobType = isBoss ? 'tank' : types[Math.floor(Math.random() * types.length)];
+
+            return {
+                name: isBoss ? `👑 ${gate.boss}` : `${gate.mobIcon} ${gate.name.split(' ')[0]} Морок`,
+                stage,
+                isBoss,
+                type: mobType,
+                maxHp: Math.round(hpBase),
+                hp: Math.round(hpBase),
+                atk: Math.round(atkBase),
+                def: Math.round(defBase),
+                intent: null
+            };
+        }
+
+        function pickEnemyIntent(enemy) {
+            const choices = [
+                { name: '⚔️ Обычная атака (1.0x)', mult: 1.0, isBlock: false, isStun: false },
+                { name: '🗡️ Быстрый выпад (0.75x)', mult: 0.75, isBlock: false, isStun: false },
+                { name: '🔨 Тяжёлый замах (1.6x)', mult: 1.6, isBlock: false, isStun: false },
+                { name: '🛡️ Защитная стойка', mult: 0, isBlock: true, isStun: false }
+            ];
+            if (enemy.isBoss) {
+                choices.push({ name: '💀 СОКРУШЕНИЕ ВРАТ (2.4x)', mult: 2.4, isBlock: false, isStun: false });
+            }
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        // 6. Thinking Timer & Turn Engine
+        function stopTurnTimer() {
+            if (combatTimerId) {
+                clearInterval(combatTimerId);
+                combatTimerId = null;
+            }
+        }
+
+        function startTurnTimer() {
+            stopTurnTimer();
+            timerEndTimestamp = Date.now() + (TURN_TIME_SEC * 1000);
+            updateTimerDisplay(TURN_TIME_SEC);
+
+            combatTimerId = setInterval(() => {
+                if (!activeCombat) {
+                    stopTurnTimer();
+                    return;
+                }
+                const remainingMs = timerEndTimestamp - Date.now();
+                const remainingSec = Math.max(0, remainingMs / 1000);
+                updateTimerDisplay(remainingSec);
+
+                if (remainingSec <= 0) {
+                    stopTurnTimer();
+                    logCombat('⏳ Время на раздумья истекло! Враг бьёт беззащитного охотника!', 'log-entry-damage');
+                    triggerHaptic('warning');
+                    resolveEnemyAttack(true);
+                }
+            }, 100);
+        }
+
+        function updateTimerDisplay(sec) {
+            const textEl = document.getElementById('center-timer-text');
+            const fillEl = document.getElementById('center-timer-fill');
+            if (textEl) textEl.textContent = sec.toFixed(1) + 's';
+            if (fillEl) {
+                const percent = Math.min(100, Math.max(0, (sec / TURN_TIME_SEC) * 100));
+                fillEl.style.width = percent + '%';
+            }
+        }
+
+        function startTurn() {
+            if (!activeCombat) return;
+            isActionLocked = false;
+            setCombatButtonsDisabled(false);
+
+            // Моб заранее выбирает удар на этот ход
+            activeCombat.enemy.intent = pickEnemyIntent(activeCombat.enemy);
+            const intentBadge = document.getElementById('enemy-intent-badge');
+            if (intentBadge) {
+                intentBadge.textContent = activeCombat.enemy.intent.name;
+            }
+
+            // Обновляем бейдж хода
+            const turnBadge = document.getElementById('combat-turn-badge');
+            if (turnBadge) {
+                turnBadge.textContent = `⚔️ ХОД ${activeCombat.turn}`;
+            }
+
+            // Восстановление маны по позиции/классу в начале хода
+            if (activeCombat.heroMp < computed.maxMp) {
+                activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 5);
+            }
+
+            renderCombatUI();
+            startTurnTimer();
+        }
+
+        function setCombatButtonsDisabled(disabled) {
+            const btns = [
+                'btn-act-attack', 'btn-act-guard', 
+                'btn-act-skill-1', 'btn-act-skill-2', 'btn-act-skill-3'
+            ];
+            btns.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = disabled;
+            });
+        }
+
+        // 7. Combat Resolution
+        function resolveAction(actionType) {
+            if (isActionLocked || !activeCombat) return;
+            isActionLocked = true;
+            stopTurnTimer();
+            setCombatButtonsDisabled(true);
+
+            const cfg = CLASS_CONFIGS[state.charClass];
+            let playerDmg = 0;
+            let mpCost = 0;
+            let isGuarding = false;
+            let logMsg = '';
+            let logType = '';
+
+            // Handle MP and Player Move Calculation
+            if (actionType === 'basic_attack') {
+                playerDmg = computed.attack;
+                logMsg = `⚔️ Вы наносите базовый удар: ${playerDmg} урона.`;
+            } else if (actionType === 'guard') {
+                isGuarding = true;
+                activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 15);
+                logMsg = `🛡️ Вы встали в глухую защиту (100% блока) и восстановили +15 MP!`;
+                logType = 'log-entry-guard';
+            } else if (actionType === 'skill_1') {
+                const sk = cfg.skills[0];
+                mpCost = sk.mp;
+                if (activeCombat.heroMp < mpCost) {
+                    showNotEnoughMp();
+                    return;
+                }
+                activeCombat.heroMp -= mpCost;
+                if (state.charClass === 'tank') {
+                    activeCombat.heroDefBuff = true;
+                    logMsg = `🛡️ Танк активировал "Укрепление"! Защита повышена.`;
+                } else if (state.charClass === 'healer') {
+                    activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 40);
+                    logMsg = `✨ Целитель использовал "Благословение": восстановлено +40 MP!`;
+                    logType = 'log-entry-heal';
+                } else if (state.charClass === 'mage') {
+                    playerDmg = Math.round(computed.attack * 1.6 + computed.skillPower);
+                    logMsg = `🔥 Огненная стрела Мага испепеляет цель на ${playerDmg} урона!`;
+                } else if (state.charClass === 'assassin') {
+                    playerDmg = Math.round(computed.attack * 1.8);
+                    logMsg = `🗡️ Ассасин совершает подлый удар из тени на ${playerDmg} урона!`;
+                }
+            } else if (actionType === 'skill_2') {
+                const sk = cfg.skills[1];
+                mpCost = sk.mp;
+                if (activeCombat.heroMp < mpCost) {
+                    showNotEnoughMp();
+                    return;
+                }
+                activeCombat.heroMp -= mpCost;
+                if (state.charClass === 'tank') {
+                    playerDmg = Math.round(computed.attack * 1.2);
+                    activeCombat.reflectActive = true;
+                    logMsg = `💥 Танк наносит ${playerDmg} урона и готовит отражение атаки!`;
+                } else if (state.charClass === 'healer') {
+                    const healVal = Math.round(computed.maxHp * 0.3);
+                    activeCombat.heroHp = Math.min(computed.maxHp, activeCombat.heroHp + healVal);
+                    logMsg = `💖 Молитва восстановила вам +${healVal} HP!`;
+                    logType = 'log-entry-heal';
+                } else if (state.charClass === 'mage') {
+                    playerDmg = Math.round(computed.attack * 1.3);
+                    activeCombat.enemyStunned = true;
+                    logMsg = `❄️ Глубокая Заморозка! Враг получает ${playerDmg} урона и оглушён!`;
+                } else if (state.charClass === 'assassin') {
+                    playerDmg = Math.round(computed.attack * 1.4);
+                    logMsg = `☠️ Клинок с теневым ядом поражает моба на ${playerDmg} урона!`;
+                }
+            }
+
+            // Apply Damage Multipliers (Rock-Paper-Scissors & Holy bonus)
+            if (playerDmg > 0) {
+                // Rock-Paper-Scissors
+                if (state.charClass === 'tank' && activeCombat.enemy.type === 'assassin') playerDmg = Math.round(playerDmg * 1.5);
+                if (state.charClass === 'assassin' && activeCombat.enemy.type === 'mage') playerDmg = Math.round(playerDmg * 1.5);
+                if (state.charClass === 'mage' && activeCombat.enemy.type === 'tank') playerDmg = Math.round(playerDmg * 1.5);
+
+                // Healer holy damage vs Gate 2 undead
+                if (state.charClass === 'healer' && activeCombat.gateId === 2) {
+                    playerDmg = Math.round(playerDmg * 1.35);
+                    logMsg += ' (Святой урон +35%!)';
+                }
+
+                // Crit check
+                const isCrit = (Math.random() * 100) < computed.crit;
+                if (isCrit) {
+                    playerDmg = Math.round(playerDmg * (computed.critDmg / 100));
+                    logMsg += ` ⚡ КРИТИЧЕСКИЙ УДАР!`;
+                }
+
+                activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - playerDmg);
+                triggerHaptic('impact');
+
+                // Vampirism
+                if (computed.vampirism > 0) {
+                    const leech = Math.round(playerDmg * (computed.vampirism / 100));
+                    activeCombat.heroHp = Math.min(computed.maxHp, activeCombat.heroHp + leech);
+                }
+            }
+
+            if (logMsg) logCombat(logMsg, logType);
+            renderCombatUI();
+
+            // Check Enemy Death
+            if (activeCombat.enemy.hp <= 0) {
+                setTimeout(() => handleStageVictory(), 400);
+                return;
+            }
+
+            // Resolve Enemy Attack
+            setTimeout(() => {
+                resolveEnemyAttack(false, isGuarding);
+            }, 500);
+        }
+
+        function showNotEnoughMp() {
+            isActionLocked = false;
+            setCombatButtonsDisabled(false);
+            logCombat('❌ Недостаточно маны (MP)!', 'log-entry-damage');
+            triggerHaptic('error');
+            startTurnTimer();
+        }
+
+        function resolveEnemyAttack(isTimeoutUndefended = false, isPlayerGuarding = false) {
+            if (!activeCombat) return;
+
+            if (activeCombat.enemyStunned) {
+                activeCombat.enemyStunned = false;
+                logCombat(`💫 Враг находится в оглушении и пропускает этот ход!`, 'log-entry-guard');
+                finishTurnStep();
+                return;
+            }
+
+            const intent = activeCombat.enemy.intent || { mult: 1.0, isBlock: false };
+
+            if (intent.isBlock) {
+                logCombat(`🛡️ Враг встал в защитную стойку и блокирует часть урона.`, 'log-entry-guard');
+                finishTurnStep();
+                return;
+            }
+
+            if (isPlayerGuarding) {
+                logCombat(`🛡️ ПОЛНЫЙ БЛОК (100%)! Вы отразили удар врага без урона!`, 'log-entry-guard');
+                triggerHaptic('success');
+                finishTurnStep();
+                return;
+            }
+
+            let rawEnemyDmg = Math.round(activeCombat.enemy.atk * intent.mult);
+
+            // Rock-Paper-Scissors incoming weaknesses
+            if (state.charClass === 'tank' && activeCombat.enemy.type === 'mage') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
+            if (state.charClass === 'mage' && activeCombat.enemy.type === 'assassin') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
+            if (state.charClass === 'assassin' && activeCombat.enemy.type === 'tank') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
+
+            // Mitigation by Defense and Damage Resistance
+            const mitigated = Math.max(5, rawEnemyDmg - Math.round(computed.defense * 0.4));
+            const finalDmg = Math.max(1, Math.round(mitigated * (1 - computed.dmgResist / 100)));
+
+            activeCombat.heroHp = Math.max(0, activeCombat.heroHp - finalDmg);
+            logCombat(`💥 Враг атаковал (${intent.name}): получено ${finalDmg} урона!`, 'log-entry-damage');
+            triggerHaptic('error');
+
+            // Tank reflection
+            if (activeCombat.reflectActive) {
+                activeCombat.reflectActive = false;
+                const reflected = Math.round(finalDmg * 0.5);
+                activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - reflected);
+                logCombat(`🪞 Отражение вернуло монстру ${reflected} урона!`, 'log-entry-heal');
+            }
+
+            renderCombatUI();
+
+            // Check Player Death
+            if (activeCombat.heroHp <= 0) {
+                setTimeout(() => handleHeroDefeat(), 400);
+                return;
+            }
+
+            // Check Enemy Death from reflect
+            if (activeCombat.enemy.hp <= 0) {
+                setTimeout(() => handleStageVictory(), 400);
+                return;
+            }
+
+            finishTurnStep();
+        }
+
+        function finishTurnStep() {
+            if (!activeCombat) return;
+            activeCombat.turn++;
+            setTimeout(() => {
+                startTurn();
+            }, 400);
+        }
+
+        // 8. QTE Mini-Game (Ultimate Skill 3)
+        let qtePoints = [];
+        let qteProgress = 0;
+        let qteTimeout = null;
+
+        function startQteSequence() {
+            const cfg = CLASS_CONFIGS[state.charClass];
+            const sk = cfg.skills[2];
+            if (activeCombat.heroMp < sk.mp) {
+                showNotEnoughMp();
+                return;
+            }
+
+            isActionLocked = true;
+            stopTurnTimer();
+            setCombatButtonsDisabled(true);
+
+            const overlay = document.getElementById('qte-overlay');
+            const canvas = document.getElementById('qte-canvas');
+            if (!overlay || !canvas) return;
+
+            overlay.style.display = 'flex';
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Generate 3 sequential nodes
+            qtePoints = [
+                { x: 50, y: height / 2, r: 24, hit: false },
+                { x: width / 2, y: 60, r: 24, hit: false },
+                { x: width - 50, y: height - 60, r: 24, hit: false }
+            ];
+            qteProgress = 0;
+            drawQteNodes(ctx);
+
+            function drawQteNodes(c) {
+                c.clearRect(0, 0, width, height);
+
+                // Draw connecting track
+                c.beginPath();
+                c.strokeStyle = '#232d4b';
+                c.lineWidth = 6;
+                c.moveTo(qtePoints[0].x, qtePoints[0].y);
+                for (let i = 1; i < qtePoints.length; i++) {
+                    c.lineTo(qtePoints[i].x, qtePoints[i].y);
+                }
+                c.stroke();
+
+                // Draw Nodes
+                qtePoints.forEach((pt, index) => {
+                    c.beginPath();
+                    c.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+                    c.fillStyle = pt.hit ? '#00ff88' : (index === qteProgress ? '#00f0ff' : '#1c2438');
+                    c.fill();
+                    c.lineWidth = 3;
+                    c.strokeStyle = pt.hit ? '#00ff88' : (index === qteProgress ? '#ffffff' : '#415a77');
+                    c.stroke();
+
+                    // Text
+                    c.fillStyle = pt.hit ? '#000' : '#fff';
+                    c.font = 'bold 14px sans-serif';
+                    c.textAlign = 'center';
+                    c.textBaseline = 'middle';
+                    c.fillText(index + 1, pt.x, pt.y);
+                });
+            }
+
+            function handlePointerHit(px, py) {
+                const target = qtePoints[qteProgress];
+                if (!target) return;
+                const dist = Math.hypot(px - target.x, py - target.y);
+                if (dist <= target.r + 15) {
+                    target.hit = true;
+                    qteProgress++;
+                    triggerHaptic('impact');
+                    drawQteNodes(ctx);
+
+                    if (qteProgress >= qtePoints.length) {
+                        finishQte(true);
+                    }
+                }
+            }
+
+            function onTouchMove(e) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                handlePointerHit(touch.clientX - rect.left, touch.clientY - rect.top);
+            }
+
+            function onMouseMove(e) {
+                if (e.buttons !== 1) return;
+                const rect = canvas.getBoundingClientRect();
+                handlePointerHit(e.clientX - rect.left, e.clientY - rect.top);
+            }
+
+            canvas.ontouchmove = onTouchMove;
+            canvas.onmousemove = onMouseMove;
+
+            // 4 seconds QTE limit
+            qteTimeout = setTimeout(() => {
+                finishQte(false);
+            }, 4000);
+
+            function finishQte(success) {
+                if (qteTimeout) {
+                    clearTimeout(qteTimeout);
+                    qteTimeout = null;
+                }
+                canvas.ontouchmove = null;
+                canvas.onmousemove = null;
+                overlay.style.display = 'none';
+
+                if (!activeCombat) return;
+
+                activeCombat.heroMp -= sk.mp;
+                let ultDmg = Math.round(computed.attack * (state.charClass === 'assassin' ? 3.0 : 2.4) + computed.skillPower);
+
+                if (success) {
+                    ultDmg = Math.round(ultDmg * 1.5);
+                    logCombat(`⚡ ИДЕАЛЬНЫЙ QTE СВАЙП! УЛЬТИМЕЙТ СОКРУШАЕТ НА ${ultDmg} УРОНА!`, 'log-entry-qte');
+                    triggerHaptic('success');
+                } else {
+                    ultDmg = Math.round(ultDmg * 0.5);
+                    logCombat(`⚠️ QTE не завершён! Ослабленный удар на ${ultDmg} урона.`, 'log-entry-damage');
+                    triggerHaptic('warning');
+                }
+
+                activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - ultDmg);
+                renderCombatUI();
+
+                if (activeCombat.enemy.hp <= 0) {
+                    setTimeout(() => handleStageVictory(), 400);
+                } else {
+                    setTimeout(() => resolveEnemyAttack(false, false), 500);
+                }
+            }
+        }
+
+        // 9. Full HP/MP Restoration & Victory / Defeat Handling
+        function restoreHeroToFull(silent = false) {
+            recalcParameters();
+            if (activeCombat) {
+                activeCombat.heroHp = computed.maxHp;
+                activeCombat.heroMp = computed.maxMp;
+            }
+            if (!silent) {
+                logCombat(`💚 Здоровье (HP) и Мана (MP) полностью восстановлены (100%)!`, 'log-entry-heal');
+            }
+        }
+
+        function handleStageVictory() {
+            if (!activeCombat) return;
+            stopTurnTimer();
+
+            const gate = GATES.find(g => g.id === activeCombat.gateId);
+            const isBoss = activeCombat.stage === 10;
+            const goldReward = Math.round((25 + (gate.minLv * 8) + (activeCombat.stage * 12)) * (state.charClass === 'healer' ? 1.5 : 1.0));
+            const expReward = 30 + (gate.minLv * 10) + (activeCombat.stage * 15);
+
+            state.gold += goldReward;
+            state.exp += expReward;
+            logCombat(`🏆 Победа на этапе ${activeCombat.stage}! Награда: +${goldReward} золота, +${expReward} EXP.`, 'log-entry-heal');
+            triggerHaptic('success');
+
+            // Level up check
+            checkLevelUp();
+
+            // 100% Full recovery after every round/stage
+            restoreHeroToFull(false);
+            renderWallet();
+
+            if (isBoss) {
+                logCombat(`👑 БОСС ВРАТ ПОВЕРЖЕН! Врата "${gate.name}" полностью зачищены!`, 'log-entry-qte');
+                setTimeout(() => {
+                    exitCombat();
+                }, 1800);
+            } else {
+                activeCombat.stage++;
+                activeCombat.turn = 1;
+                activeCombat.enemy = getMonsterForStage(gate, activeCombat.stage);
+                document.getElementById('combat-stage-counter').textContent = `ЭТАП ${activeCombat.stage}/10`;
+                renderCombatUI();
+                logCombat(`➡️ Переход на ЭТАП ${activeCombat.stage}/10...`, 'log-entry');
+                setTimeout(() => {
+                    startTurn();
+                }, 1000);
+            }
+        }
+
+        function handleHeroDefeat() {
+            if (!activeCombat) return;
+            stopTurnTimer();
+            logCombat(`💀 Вы пали в бою во Вратах! Отступление в безопасный лагерь...`, 'log-entry-damage');
+            triggerHaptic('error');
+            setTimeout(() => {
+                exitCombat();
+            }, 1500);
+        }
+
+        function checkLevelUp() {
+            const neededExp = state.level * 100;
+            if (state.exp >= neededExp && state.level < 100) {
+                state.level++;
+                state.exp -= neededExp;
+                state.freePoints += 5;
+                logCombat(`🎉 НОВЫЙ УРОВЕНЬ: ${state.level}! Получено +5 очков характеристик!`, 'log-entry-qte');
+                triggerHaptic('success');
+                saveCurrentSlot();
+                renderHeroHeader();
+                renderHeroTab();
+            }
+        }
+
+        // 10. Combat Arena View Transitions
+        function enterGate(gateId) {
+            const gate = GATES.find(g => g.id === gateId);
+            if (!gate) return;
+            if (state.level < gate.minLv) {
+                alert(`Врата требуют ${gate.minLv} уровень! Ваш уровень: ${state.level}`);
+                return;
+            }
+
+            recalcParameters();
+            activeCombat = {
+                gateId: gate.id,
+                stage: 1,
+                turn: 1,
+                heroHp: computed.maxHp,
+                heroMp: computed.maxMp,
+                enemy: getMonsterForStage(gate, 1),
+                reflectActive: false,
+                heroDefBuff: false,
+                enemyStunned: false
+            };
+
+            // Switch sub-view
+            document.getElementById('view-gates-list').style.display = 'none';
+            document.getElementById('view-combat-arena').style.display = 'block';
+
+            // Setup Header in Combat
+            document.getElementById('combat-gate-title').textContent = gate.name;
+            document.getElementById('combat-stage-counter').textContent = `ЭТАП 1/10`;
+
+            const logBox = document.getElementById('combat-log-container');
+            if (logBox) logBox.innerHTML = '';
+            logCombat(`⛩️ Вы вошли во врата: "${gate.name}". Приготовьтесь к бою!`, 'log-entry');
+
+            // 100% full resource restore on entry
+            restoreHeroToFull(true);
+            renderCombatUI();
+            updateClassSkillButtons();
+            startTurn();
+        }
+
+        function exitCombat() {
+            stopTurnTimer();
+            if (qteTimeout) {
+                clearTimeout(qteTimeout);
+                qteTimeout = null;
+            }
+            const qteOverlay = document.getElementById('qte-overlay');
+            if (qteOverlay) qteOverlay.style.display = 'none';
+
+            activeCombat = null;
+            isActionLocked = false;
+
+            // Full restoration upon returning to gate hub
+            restoreHeroToFull(true);
+            saveCurrentSlot();
+
+            document.getElementById('view-combat-arena').style.display = 'none';
+            document.getElementById('view-gates-list').style.display = 'block';
+            renderGatesList();
+        }
+
+        function logCombat(message, className = 'log-entry') {
+            const container = document.getElementById('combat-log-container');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = className;
+            div.textContent = message;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 11. Render Functions & UI Synchronization
+        function renderHeroHeader() {
+            const rank = getHeroRank(state.level);
+            const cfg = CLASS_CONFIGS[state.charClass];
+
+            const nameEl = document.getElementById('hero-header-name');
+            const rankEl = document.getElementById('hero-header-rank');
+            const levelEl = document.getElementById('hero-header-level');
+            const classEl = document.getElementById('hero-header-class');
+            const avEl = document.getElementById('hero-header-avatar');
+
+            if (nameEl) nameEl.textContent = state.name;
+            if (rankEl) {
+                rankEl.textContent = rank.name;
+                rankEl.style.backgroundColor = rank.color;
+            }
+            if (levelEl) levelEl.textContent = state.level;
+            if (classEl) classEl.textContent = cfg.name;
+            if (avEl) avEl.textContent = cfg.icon;
+
+            renderWallet();
+        }
+
+        function renderWallet() {
+            const goldEl = document.getElementById('wallet-gold-val');
+            if (goldEl) goldEl.textContent = state.gold;
+        }
+
+        function renderGatesList() {
+            const container = document.getElementById('gates-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            GATES.forEach(gate => {
+                const isLocked = state.level < gate.minLv;
+                const card = document.createElement('div');
+                card.className = `gate-card ${isLocked ? 'locked' : ''}`;
+                card.innerHTML = `
+                    <div class="gate-card-top">
+                        <div>
+                            <div class="gate-title">${gate.name}</div>
+                            <div class="gate-desc">${gate.desc}</div>
+                            <div style="font-size:11px; margin-top:4px; color:${isLocked ? '#ff6688' : '#00ff88'};">
+                                ${isLocked ? `🔒 Требуется Ур. ${gate.minLv}` : `🔓 Доступно (Босс: ${gate.boss})`}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-enter-gate" ${isLocked ? 'disabled' : ''} onclick="window.game.enterGate(${gate.id})">
+                        ${isLocked ? `Недостаточный уровень (${gate.minLv})` : `Войти во врата`}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderCombatUI() {
+            if (!activeCombat) return;
+
+            // Enemy UI
+            const en = activeCombat.enemy;
+            document.getElementById('enemy-name').textContent = en.name;
+            document.getElementById('enemy-avatar-icon').textContent = en.isBoss ? '👑' : (en.type === 'mage' ? '🧙‍♂️' : (en.type === 'assassin' ? '🗡️' : '👹'));
+            const enHpPercent = Math.max(0, (en.hp / en.maxHp) * 100);
+            document.getElementById('enemy-hp-fill').style.width = enHpPercent + '%';
+            document.getElementById('enemy-hp-text').textContent = `${en.hp} / ${en.maxHp}`;
+
+            // Hero UI in Combat
+            const cfg = CLASS_CONFIGS[state.charClass];
+            document.getElementById('hero-combat-name').textContent = state.name;
+            document.getElementById('hero-combat-avatar').textContent = cfg.icon;
+            const heroHpPercent = Math.max(0, (activeCombat.heroHp / computed.maxHp) * 100);
+            const heroMpPercent = Math.max(0, (activeCombat.heroMp / computed.maxMp) * 100);
+
+            document.getElementById('hero-hp-fill').style.width = heroHpPercent + '%';
+            document.getElementById('hero-hp-text').textContent = `${activeCombat.heroHp} / ${computed.maxHp}`;
+
+            document.getElementById('hero-mp-fill').style.width = heroMpPercent + '%';
+            document.getElementById('hero-mp-text').textContent = `${activeCombat.heroMp} / ${computed.maxMp}`;
+        }
+
+        function updateClassSkillButtons() {
+            const cfg = CLASS_CONFIGS[state.charClass];
+            const s1 = cfg.skills[0];
+            const s2 = cfg.skills[1];
+            const s3 = cfg.skills[2];
+
+            document.getElementById('skill-1-name').textContent = s1.name;
+            document.getElementById('skill-1-sub').textContent = `${s1.desc} • ${s1.mp} MP`;
+
+            document.getElementById('skill-2-name').textContent = s2.name;
+            document.getElementById('skill-2-sub').textContent = `${s2.desc} • ${s2.mp} MP`;
+
+            document.getElementById('skill-3-name').textContent = `⚡ ${s3.name} (QTE)`;
+            document.getElementById('skill-3-sub').textContent = `${s3.desc} • ${s3.mp} MP`;
+        }
+
+        function renderHeroTab() {
+            recalcParameters();
+
+            // Update Class Buttons Active State
+            ['tank', 'healer', 'mage', 'assassin'].forEach(cls => {
+                const btn = document.getElementById(`btn-class-${cls}`);
+                if (btn) {
+                    if (state.charClass === cls) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+
+            // Update Class Description Box
+            const descBox = document.getElementById('class-desc-box');
+            if (descBox) {
+                const cfg = CLASS_CONFIGS[state.charClass];
+                descBox.innerHTML = `<strong>${cfg.name}:</strong> ${cfg.desc}`;
+            }
+
+            // Stat Steppers
+            const list = document.getElementById('stat-allocators-list');
+            if (list) {
+                list.innerHTML = '';
+                const statMeta = [
+                    { key: 'str', label: 'Сила (STR)', icon: '💪' },
+                    { key: 'agi', label: 'Ловкость (AGI)', icon: '⚡' },
+                    { key: 'end', label: 'Выносливость (END)', icon: '🛡️' },
+                    { key: 'int', label: 'Интеллект (INT)', icon: '🧠' },
+                    { key: 'per', label: 'Восприятие (PER)', icon: '👁️' }
+                ];
+
+                const pendingSum = Object.values(pendingAlloc).reduce((a, b) => a + b, 0);
+                const availablePoints = state.freePoints - pendingSum;
+                document.getElementById('free-points-val').textContent = availablePoints;
+
+                statMeta.forEach(m => {
+                    const baseVal = state.stats[m.key];
+                    const added = pendingAlloc[m.key];
+                    const row = document.createElement('div');
+                    row.className = 'stat-alloc-row';
+                    row.innerHTML = `
+                        <div class="stat-alloc-name">${m.icon} ${m.label}</div>
+                        <div class="stat-stepper">
+                            <button class="stepper-btn" onclick="window.game.adjustStat('${m.key}', -1)">-</button>
+                            <div class="stat-alloc-val">
+                                ${baseVal}
+                                ${added > 0 ? `<span class="stat-pending-val">+${added}</span>` : ''}
+                            </div>
+                            <button class="stepper-btn" onclick="window.game.adjustStat('${m.key}', 1)">+</button>
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+
+                document.getElementById('btn-apply-stats').disabled = pendingSum <= 0;
+                document.getElementById('btn-cancel-stats').disabled = pendingSum <= 0;
+            }
+
+            // 13 Parameters Grid
+            const pGrid = document.getElementById('parameters-display-grid');
+            if (pGrid) {
+                pGrid.innerHTML = `
+                    <div class="parameter-badge"><span class="param-name">Атака:</span><span class="param-val">${computed.attack}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Защита:</span><span class="param-val">${computed.defense}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Крит шанс:</span><span class="param-val">${computed.crit}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Сила крита:</span><span class="param-val">${computed.critDmg}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Точность:</span><span class="param-val">${computed.accuracy}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Уклонение:</span><span class="param-val">${computed.evasion}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Сопротивление:</span><span class="param-val">${computed.dmgResist}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Скорость:</span><span class="param-val">${computed.speed}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Реакция:</span><span class="param-val">${computed.reaction}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Пробитие:</span><span class="param-val">${computed.penetration}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Навыки (Сила):</span><span class="param-val">${computed.skillPower}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Вампиризм:</span><span class="param-val">${computed.vampirism}%</span></div>
+                    <div class="parameter-badge"><span class="param-name">Макс. Мана:</span><span class="param-val">${computed.maxMp}</span></div>
+                    <div class="parameter-badge"><span class="param-name">Макс. HP:</span><span class="param-val">${computed.maxHp}</span></div>
+                `;
+            }
+        }
+
+        function renderForgeTab() {
+            const container = document.getElementById('forge-items-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const items = [
+                { key: 'weapon', name: 'Оружие Охотника', icon: '🗡️', stat: '+8 Атака' },
+                { key: 'armor', name: 'Теневой Доспех', icon: '🥋', stat: '+7 Защита' },
+                { key: 'helmet', name: 'Шлем Проницательности', icon: '🪖', stat: '+1.5% Крит' },
+                { key: 'ring', name: 'Перстень Монарха', icon: '💍', stat: '+25 MP' }
+            ];
+
+            items.forEach(it => {
+                const level = state.equip[it.key];
+                const cost = Math.round(50 * Math.pow(1.35, level));
+                const canAfford = state.gold >= cost;
+
+                const row = document.createElement('div');
+                row.className = 'forge-item';
+                row.innerHTML = `
+                    <div class="forge-info">
+                        <div class="forge-icon">${it.icon}</div>
+                        <div>
+                            <div style="font-weight:700; font-size:13px;">${it.name} (+${level})</div>
+                            <div style="font-size:11px; color:var(--text-muted);">${it.stat} за уровень</div>
+                        </div>
+                    </div>
+                    <button class="btn-upgrade" ${canAfford ? '' : 'disabled'} onclick="window.game.upgradeEquipment('${it.key}')">
+                        +1 за 🪙${cost}
+                    </button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function renderPartyTab() {
+            const badge = document.getElementById('party-tactic-badge');
+            if (badge) {
+                badge.textContent = state.tactic === 'vanguard' ? 'АВАНГАРД (+15% Защита)' : 'АРЬЕРГАРД (+15% Атака)';
+            }
+        }
+
+        function renderMoreTab() {
+            [1, 2, 3].forEach(id => {
+                const btn = document.getElementById(`slot-btn-${id}`);
+                if (btn) {
+                    if (currentSlot === id) {
+                        btn.style.borderColor = 'var(--accent-cyan)';
+                        btn.style.color = 'var(--accent-cyan)';
+                        btn.textContent = `Слот ${id} (Активен)`;
+                    } else {
+                        btn.style.borderColor = 'var(--border-color)';
+                        btn.style.color = '#fff';
+                        btn.textContent = `Слот ${id}`;
+                    }
+                }
+            });
+
+            const hapBtn = document.getElementById('btn-toggle-haptic');
+            if (hapBtn) {
+                hapBtn.textContent = state.haptics ? 'ВКЛ' : 'ВЫКЛ';
+                hapBtn.style.color = state.haptics ? 'var(--accent-green)' : 'var(--accent-red)';
+            }
+        }
+
+        // 12. Global Public API for Inline Event Handlers
+        window.game = {
+            // Tab Switcher
+            switchTab: function (tabId) {
+                if (activeCombat) {
+                    const confirmLeave = confirm('Вы находитесь в бою! Выйти из Врат обратно в лагерь?');
+                    if (confirmLeave) {
+                        exitCombat();
+                    } else {
+                        return;
+                    }
+                }
+
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-button').forEach(el => el.classList.remove('active'));
+
+                const targetTab = document.getElementById(`tab-tab-${tabId}`) || document.getElementById(`tab-${tabId}`);
+                if (targetTab) targetTab.classList.add('active');
+
+                // Update bottom nav highlights
+                const navIndex = ['gates', 'party', 'forge', 'hero', 'more'].indexOf(tabId);
+                const navButtons = document.querySelectorAll('.bottom-nav .nav-button');
+                if (navButtons[navIndex]) navButtons[navIndex].classList.add('active');
+
+                triggerHaptic('light');
+
+                // Re-render specific tab contents
+                if (tabId === 'gates') renderGatesList();
+                if (tabId === 'hero') renderHeroTab();
+                if (tabId === 'forge') renderForgeTab();
+                if (tabId === 'party') renderPartyTab();
+                if (tabId === 'more') renderMoreTab();
+            },
+
+            // Gate & Combat controls
+            enterGate: function (gateId) {
+                enterGate(gateId);
+            },
+
+            exitCombat: function () {
+                exitCombat();
+            },
+
+            handlePlayerAction: function (action) {
+                if (action === 'skill_3') {
+                    startQteSequence();
+                } else {
+                    resolveAction(action);
+                }
+            },
+
+            // Hero Progression & Stats Controls
+            switchClass: function (newClass) {
+                if (!CLASS_CONFIGS[newClass]) return;
+                state.charClass = newClass;
+                saveCurrentSlot();
+                renderHeroHeader();
+                renderHeroTab();
+                triggerHaptic('light');
+            },
+
+            adjustStat: function (statKey, delta) {
+                const pendingSum = Object.values(pendingAlloc).reduce((a, b) => a + b, 0);
+                const available = state.freePoints - pendingSum;
+
+                if (delta > 0 && available <= 0) {
+                    triggerHaptic('warning');
+                    return;
+                }
+                if (delta < 0 && pendingAlloc[statKey] <= 0) {
+                    return;
+                }
+
+                pendingAlloc[statKey] += delta;
+                triggerHaptic('light');
+                renderHeroTab();
+            },
+
+            applyPendingStats: function () {
+                const pendingSum = Object.values(pendingAlloc).reduce((a, b) => a + b, 0);
+                if (pendingSum <= 0) return;
+
+                Object.keys(pendingAlloc).forEach(k => {
+                    state.stats[k] += pendingAlloc[k];
+                    pendingAlloc[k] = 0;
+                });
+                state.freePoints -= pendingSum;
+                saveCurrentSlot();
+                renderHeroHeader();
+                renderHeroTab();
+                triggerHaptic('success');
+            },
+
+            cancelPendingStats: function () {
+                pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
+                triggerHaptic('light');
+                renderHeroTab();
+            },
+
+            // Forge Upgrades
+            upgradeEquipment: function (itemKey) {
+                const currentLevel = state.equip[itemKey];
+                const cost = Math.round(50 * Math.pow(1.35, currentLevel));
+                if (state.gold < cost) {
+                    triggerHaptic('error');
+                    alert('Недостаточно золота для ковки!');
+                    return;
+                }
+
+                state.gold -= cost;
+                state.equip[itemKey]++;
+                saveCurrentSlot();
+                recalcParameters();
+                renderWallet();
+                renderForgeTab();
+                renderHeroHeader();
+                triggerHaptic('success');
+            },
+
+            // Tactics & Party
+            setTactic: function (tacticType) {
+                state.tactic = tacticType;
+                saveCurrentSlot();
+                recalcParameters();
+                renderPartyTab();
+                triggerHaptic('light');
+                alert(`Тактика изменена на: ${tacticType === 'vanguard' ? 'Авангард (+15% Защиты)' : 'Арьергард (+15% Атаки)'}`);
+            },
+
+            // Multi-slot management
+            changeSlot: function (slotId) {
+                if (activeCombat) {
+                    alert('Завершите или покиньте бой перед сменой профиля!');
+                    return;
+                }
+                loadSlot(slotId);
+                renderHeroHeader();
+                renderGatesList();
+                renderMoreTab();
+                triggerHaptic('success');
+            },
+
+            resetCurrentSlotData: function () {
+                const confirmReset = confirm(`Вы уверены, что хотите полностью стереть прогресс Слота ${currentSlot}?`);
+                if (!confirmReset) return;
+                localStorage.removeItem(`sl_save_slot_${currentSlot}`);
+                loadSlot(currentSlot);
+                renderHeroHeader();
+                renderGatesList();
+                renderMoreTab();
+                triggerHaptic('warning');
+            },
+
+            toggleHaptic: function () {
+                state.haptics = !state.haptics;
+                saveCurrentSlot();
+                renderMoreTab();
+                triggerHaptic('light');
+            }
+        };
+
+        // 13. Application Boot
+        loadSlot(1);
+        renderHeroHeader();
+        renderGatesList();
+        renderForgeTab();
+        renderHeroTab();
+        renderPartyTab();
+        renderMoreTab();
+
+    })();
+    </script>
+</body>
+</html>
