@@ -21,6 +21,21 @@
             --text-muted: #7e8ba6;
             --border-color: #232d4b;
             --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+            /* Палитра редкостей */
+            --rarity-common: #ffffff;
+            --rarity-uncommon: #00ff88;
+            --rarity-rare: #0072ff;
+            --rarity-epic: #a855f7;
+            --rarity-legendary: #ff8c00;
+            --rarity-unique: #ff3344;
+            --rarity-world: #ffff00;
+
+            /* Safe Area vars */
+            --sat: env(safe-area-inset-top);
+            --sab: env(safe-area-inset-bottom);
+            --sal: env(safe-area-inset-left);
+            --sar: env(safe-area-inset-right);
         }
 
         * {
@@ -42,14 +57,14 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            padding-bottom: 75px;
+            padding-bottom: calc(75px + var(--sab));
         }
 
         /* Top Header */
         .header-bar {
             background: rgba(18, 23, 38, 0.95);
             backdrop-filter: blur(10px);
-            padding: 10px 16px;
+            padding: max(10px, var(--sat)) 16px 10px max(16px, var(--sal));
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
@@ -112,7 +127,7 @@
         /* Container & Tabs */
         .main-container {
             flex: 1;
-            padding: 14px;
+            padding: 12px;
             max-width: 600px;
             margin: 0 auto;
             width: 100%;
@@ -138,7 +153,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 64px;
+            height: calc(64px + var(--sab));
+            padding-bottom: var(--sab);
             background: rgba(18, 23, 38, 0.98);
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -161,7 +177,7 @@
             font-weight: 600;
             cursor: pointer;
             width: 20%;
-            height: 100%;
+            height: 64px;
             transition: all 0.2s;
         }
 
@@ -183,7 +199,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
@@ -192,13 +208,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding-bottom: 8px;
         }
 
         .card-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #fff;
             display: flex;
@@ -211,11 +227,11 @@
             background: linear-gradient(145deg, #13192c, #0e1322);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             transition: transform 0.15s, border-color 0.15s;
         }
 
@@ -235,13 +251,13 @@
         }
 
         .gate-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #fff;
         }
 
         .gate-desc {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
         }
 
@@ -249,19 +265,14 @@
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
             color: #000;
             border: none;
-            padding: 10px 14px;
+            padding: 9px 12px;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-enter-gate:active {
-            opacity: 0.8;
         }
 
         .btn-enter-gate:disabled {
@@ -270,7 +281,130 @@
             cursor: not-allowed;
         }
 
-        /* COMBAT ARENA VIEW */
+        /* ======================== PARTY STYLES ======================== */
+        .party-subnav {
+            display: flex;
+            gap: 4px;
+            background: #0d1220;
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .party-sub-btn {
+            flex: 1;
+            padding: 7px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .party-sub-btn.active {
+            background: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 114, 255, 0.4);
+        }
+
+        .party-lobby-card {
+            background: #141b2e;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .party-lobby-info h4 {
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .party-lobby-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .party-members-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .party-member-slot {
+            background: #101626;
+            border: 1px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 52px;
+        }
+
+        .party-member-slot.occupied {
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: #141c30;
+        }
+
+        .party-member-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .party-member-name {
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90px;
+        }
+
+        .btn-kick-member {
+            background: rgba(255, 51, 102, 0.2);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .select-gate-input {
+            width: 100%;
+            background: #141b2e;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        /* COMBAT ARENA */
         #view-combat-arena {
             display: none;
         }
@@ -287,7 +421,7 @@
         }
 
         .combat-stage-badge {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--accent-gold);
         }
@@ -298,15 +432,9 @@
             color: var(--accent-red);
             padding: 5px 12px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-exit-combat:active {
-            background: var(--accent-red);
-            color: #fff;
         }
 
         .turn-counter-badge {
@@ -315,20 +443,19 @@
             color: var(--accent-cyan);
             padding: 4px 8px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
         }
 
-        /* 3-Zone Combat Layout */
         .combat-arena-grid {
             display: grid;
-            grid-template-columns: 1fr 100px 1fr;
-            gap: 8px;
+            grid-template-columns: 1fr 90px 1fr;
+            gap: 6px;
             align-items: center;
             background: #0d1220;
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 12px 8px;
+            padding: 10px 6px;
             margin-bottom: 10px;
         }
 
@@ -337,19 +464,17 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .fighter-avatar {
-            width: 58px;
-            height: 58px;
+            width: 52px;
+            height: 52px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            position: relative;
+            font-size: 26px;
         }
 
         .fighter-avatar.enemy-av {
@@ -363,30 +488,28 @@
         }
 
         .fighter-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 105px;
+            max-width: 95px;
         }
 
         .enemy-intent-badge {
             background: rgba(255, 51, 102, 0.2);
             border: 1px solid rgba(255, 51, 102, 0.5);
             color: #ff99b3;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 2px 6px;
+            padding: 2px 4px;
             border-radius: 4px;
-            margin-top: 2px;
-            max-width: 110px;
+            max-width: 100px;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
         }
 
-        /* Center VS & Thinking Timer */
         .combat-center-col {
             display: flex;
             flex-direction: column;
@@ -396,11 +519,11 @@
         }
 
         .vs-neon {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             font-style: italic;
             color: #fff;
-            text-shadow: 0 0 8px var(--accent-cyan), 0 0 16px var(--accent-blue);
+            text-shadow: 0 0 8px var(--accent-cyan);
         }
 
         .center-timer-card {
@@ -408,18 +531,18 @@
             background: #141b2e;
             border: 1px solid rgba(0, 240, 255, 0.3);
             border-radius: 8px;
-            padding: 4px;
+            padding: 3px;
             text-align: center;
         }
 
         .center-timer-label {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
         .center-timer-val {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 900;
             color: var(--accent-cyan);
             font-family: monospace;
@@ -427,64 +550,59 @@
 
         .center-timer-bar {
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: #252f4a;
             border-radius: 2px;
             overflow: hidden;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .center-timer-fill {
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            transition: width 0.1s linear;
         }
 
-        /* Bars (HP, MP) */
         .stat-bar-box {
             width: 100%;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .stat-bar-track {
-            height: 8px;
+            height: 6px;
             background: #1a2238;
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
-            position: relative;
         }
 
         .stat-bar-fill {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 0.25s ease;
         }
 
         .fill-hp { background: linear-gradient(90deg, #ff3366, #ff6b8b); }
         .fill-mp { background: linear-gradient(90deg, #0072ff, #00f0ff); }
-        .fill-exp { background: linear-gradient(90deg, #ffd700, #ffaa00); }
 
         .stat-bar-text {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             margin-top: 1px;
             color: var(--text-muted);
         }
 
-        /* Combat Log */
         .combat-log-card {
             background: #0d1220;
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            height: 85px;
+            height: 80px;
             padding: 8px;
             overflow-y: auto;
             font-size: 11px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
         }
 
         .log-entry { color: #b3c0dc; }
@@ -493,12 +611,10 @@
         .log-entry-guard { color: #ffd700; font-weight: 600; }
         .log-entry-qte { color: var(--accent-cyan); font-weight: 700; }
 
-        /* Universal Action Buttons */
         .combat-actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 6px;
         }
 
         .btn-action {
@@ -506,33 +622,24 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             color: #fff;
-            padding: 10px 8px;
-            font-size: 12px;
+            padding: 8px 6px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2px;
-            transition: all 0.15s;
-        }
-
-        .btn-action:active:not(:disabled) {
-            transform: scale(0.97);
-            background: #202b48;
         }
 
         .btn-action:disabled {
             opacity: 0.45;
             cursor: not-allowed;
-            border-color: #202538;
         }
 
         .btn-action-primary {
             background: linear-gradient(135deg, rgba(0, 114, 255, 0.3), rgba(0, 240, 255, 0.3));
             border-color: var(--accent-cyan);
-            color: #fff;
         }
 
         .btn-action-guard {
@@ -545,16 +652,14 @@
             grid-column: span 2;
             background: linear-gradient(135deg, rgba(157, 78, 221, 0.35), rgba(255, 51, 102, 0.35));
             border-color: var(--accent-purple);
-            color: #fff;
         }
 
         .skill-subtext {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
-            font-weight: 500;
         }
 
-        /* QTE Canvas Overlay */
+        /* QTE Canvas */
         #qte-overlay {
             display: none;
             position: fixed;
@@ -568,22 +673,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: max(20px, var(--sat)) 20px max(20px, var(--sab)) 20px;
         }
 
         .qte-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             color: var(--accent-cyan);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
 
         .qte-instruction {
-            font-size: 13px;
+            font-size: 12px;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         #qte-canvas {
@@ -591,10 +694,317 @@
             border: 2px solid var(--accent-cyan);
             border-radius: 16px;
             touch-action: none;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
         }
 
-        /* Hero / Stats Tab */
+        /* 10-SLOT HERO DOLL */
+        .hero-doll-wrapper {
+            display: grid;
+            grid-template-columns: 1.15fr 0.9fr 1.15fr;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .doll-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .doll-item-slot {
+            background: #101524;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 5px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            position: relative;
+            min-height: 42px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+        }
+
+        .doll-item-slot.right-align {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .slot-icon-wrapper {
+            position: relative;
+            width: 28px;
+            height: 28px;
+            background: #192138;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .enhance-badge {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            background: #ffd700;
+            color: #000;
+            font-size: 8px;
+            font-weight: 900;
+            padding: 1px 3px;
+            border-radius: 4px;
+            line-height: 1;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .slot-details {
+            overflow: hidden;
+            line-height: 1.2;
+        }
+
+        .slot-title {
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 82px;
+        }
+
+        .slot-sub {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .doll-center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #0f1526;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 4px;
+        }
+
+        .doll-hero-avatar {
+            width: 58px;
+            height: 68px;
+            background: linear-gradient(180deg, #18233c 0%, #0d1222 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .set-bonus-banner {
+            background: #0d1322;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 4px;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .set-bonus-active {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.08);
+            color: #d1ffe6;
+        }
+
+        .set-bonus-inactive {
+            color: var(--text-muted);
+        }
+
+        /* Stats Steppers */
+        .stat-alloc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-alloc-name {
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-stepper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stepper-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #1b233a;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .stat-alloc-val {
+            font-size: 13px;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .stat-pending-val {
+            color: var(--accent-green);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .parameters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .parameter-badge {
+            background: #0f1424;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .param-name { color: var(--text-muted); }
+        .param-val { font-weight: 700; color: #fff; display: flex; align-items: center; }
+
+        .param-diff-green {
+            color: #00ff88;
+            font-weight: 800;
+            font-size: 10px;
+            margin-left: 4px;
+            text-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
+            animation: pulseDiff 1.2s infinite ease-in-out alternate;
+        }
+
+        @keyframes pulseDiff {
+            from { transform: scale(1); opacity: 0.85; }
+            to { transform: scale(1.08); opacity: 1; }
+        }
+
+        /* FORGE & INVENTORY */
+        .forge-slots-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 240px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .forge-slot-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #141b2e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+
+        .btn-upgrade {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .btn-upgrade:disabled {
+            background: #252f4a;
+            color: var(--text-muted);
+        }
+
+        /* Backpack Gear Cards */
+        .backpack-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .backpack-card {
+            background: #13192c;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .backpack-card-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .backpack-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-equip {
+            background: var(--accent-cyan);
+            color: #000;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-equip:disabled {
+            background: #252e42;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-sell {
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Classes list in "More" tab */
         .class-selector-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -612,7 +1022,6 @@
             font-weight: 700;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
         }
 
         .class-btn.active {
@@ -621,145 +1030,18 @@
             color: var(--accent-cyan);
         }
 
-        .stat-alloc-row {
+        .btn-group {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .stat-alloc-name {
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stat-stepper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .stepper-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: #1b233a;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .stepper-btn:active {
-            background: var(--accent-cyan);
-            color: #000;
-        }
-
-        .stat-alloc-val {
-            font-size: 14px;
-            font-weight: 700;
-            min-width: 45px;
-            text-align: center;
-        }
-
-        .stat-pending-val {
-            color: var(--accent-green);
-            font-size: 12px;
-        }
-
-        .parameters-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-top: 10px;
         }
 
-        .parameter-badge {
-            background: #0f1424;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            padding: 6px 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-        }
-
-        .param-name { color: var(--text-muted); }
-        .param-val { font-weight: 700; color: #fff; }
-
-        /* Forge Tab */
-        .forge-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .forge-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #141b2e;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px 12px;
-        }
-
-        .forge-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .forge-icon {
-            font-size: 24px;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: #1b233a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-upgrade {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            color: #fff;
-            border: none;
-            padding: 8px 14px;
+        .btn-block {
+            flex: 1;
+            padding: 8px;
             border-radius: 8px;
             font-weight: 700;
             font-size: 12px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .btn-upgrade:disabled {
-            background: #252f4a;
-            color: var(--text-muted);
-            cursor: not-allowed;
-        }
-
-        /* Buttons generic */
-        .btn-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .btn-block {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
             cursor: pointer;
             border: none;
             text-align: center;
@@ -781,14 +1063,79 @@
             border: 1px solid var(--accent-red);
             color: var(--accent-red);
         }
+
+        .toast {
+            position: fixed;
+            top: max(60px, calc(var(--sat) + 60px));
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(18, 23, 38, 0.95);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 12, 20, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Загрузка данных...</div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast-notification"></div>
+
     <!-- Header bar -->
     <header class="header-bar">
         <div class="hero-summary">
-            <div class="hero-avatar" id="hero-header-avatar">⚔️</div>
+            <div class="hero-avatar" id="hero-header-avatar">🛡️⚔️</div>
             <div class="hero-info-header">
                 <h2>
                     <span id="hero-header-name">Джин-Ву</span>
@@ -810,15 +1157,14 @@
 
         <!-- TAB 1: GATES (ВРАТА) -->
         <section id="tab-gates" class="tab-content active">
-            <!-- Normal Gate Select Screen -->
             <div id="view-gates-list">
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">⛩️ Врата Подземелий</span>
                         <span style="font-size:11px; color:var(--accent-cyan);">Ранг E – SSS</span>
                     </div>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-                        Врата разделены на 10 рангов (по 10 этапов). На 10-м этапе вас ждёт смертоносный Босс Врат.
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">
+                        Врата разделены на 10 рангов по 10 этапов. Побеждайте мобов и боссов, чтобы выбивать снаряжение от Обычного до Мирового!
                     </p>
                     <div id="gates-container"></div>
                 </div>
@@ -837,9 +1183,8 @@
                     </div>
                 </div>
 
-                <!-- 3-Zone Combat Arena Grid -->
                 <div class="combat-arena-grid">
-                    <!-- Zone 1: Enemy (Left) -->
+                    <!-- Zone 1: Enemy -->
                     <div class="combat-fighter-col">
                         <div class="fighter-avatar enemy-av" id="enemy-avatar-icon">👺</div>
                         <div class="fighter-name" id="enemy-name">Лесной Гоблин</div>
@@ -852,7 +1197,7 @@
                         <div class="enemy-intent-badge" id="enemy-intent-badge">⚔️ Выпад (1.0x)</div>
                     </div>
 
-                    <!-- Zone 2: VS & Thinking Timer (Center) -->
+                    <!-- Zone 2: Timer -->
                     <div class="combat-center-col">
                         <div class="vs-neon">VS</div>
                         <div class="center-timer-card">
@@ -864,7 +1209,7 @@
                         </div>
                     </div>
 
-                    <!-- Zone 3: Hero (Right) -->
+                    <!-- Zone 3: Hero -->
                     <div class="combat-fighter-col">
                         <div class="fighter-avatar hero-av" id="hero-combat-avatar">🛡️</div>
                         <div class="fighter-name" id="hero-combat-name">Джин-Ву</div>
@@ -874,7 +1219,7 @@
                             </div>
                             <div class="stat-bar-text" id="hero-hp-text">350 / 350</div>
                         </div>
-                        <div class="stat-bar-box" style="margin-top:2px;">
+                        <div class="stat-bar-box">
                             <div class="stat-bar-track">
                                 <div class="stat-bar-fill fill-mp" id="hero-mp-fill" style="width: 100%;"></div>
                             </div>
@@ -883,20 +1228,18 @@
                     </div>
                 </div>
 
-                <!-- Combat Log -->
                 <div class="combat-log-card" id="combat-log-container">
                     <div class="log-entry">Подземелье открыто. Монстр готовится к первой атаке!</div>
                 </div>
 
-                <!-- Action Buttons: 2 universal + 3 class skills -->
                 <div class="combat-actions-grid">
                     <button class="btn-action btn-action-primary" id="btn-act-attack" onclick="window.game.handlePlayerAction('basic_attack')">
                         <span>⚔️ Базовая атака</span>
                         <span class="skill-subtext">Физ. урон (0 MP)</span>
                     </button>
                     <button class="btn-action btn-action-guard" id="btn-act-guard" onclick="window.game.handlePlayerAction('guard')">
-                        <span>🛡️ Защита (100%)</span>
-                        <span class="skill-subtext">Блок 100% урона + Мана</span>
+                        <span>🛡️ Защита (60%)</span>
+                        <span class="skill-subtext">Блок 60% урона</span>
                     </button>
                     <button class="btn-action" id="btn-act-skill-1" onclick="window.game.handlePlayerAction('skill_1')">
                         <span id="skill-1-name">Навык 1</span>
@@ -914,77 +1257,155 @@
             </div>
         </section>
 
-        <!-- TAB 2: PARTY (ПАТИ) -->
+        <!-- TAB 2: PARTY (ПОЛНОЦЕННАЯ СИСТЕМА ЛОББИ) -->
         <section id="tab-party" class="tab-content">
             <div class="card">
-                <div class="card-header">
-                    <span class="card-title">🛡️ Отряд и Тактика</span>
-                    <span id="party-tactic-badge" style="font-size:11px; font-weight:700; color:var(--accent-cyan);">АВАНГАРД</span>
+                <!-- Внутренняя навигация Пати -->
+                <div class="party-subnav">
+                    <button class="party-sub-btn active" id="btn-sub-quick" onclick="window.game.switchPartySubView('quick')">⚡ Быстрое пати</button>
+                    <button class="party-sub-btn" id="btn-sub-browse" onclick="window.game.switchPartySubView('browse')">📋 Существующие</button>
+                    <button class="party-sub-btn" id="btn-sub-manage" onclick="window.game.switchPartySubView('manage')">👑 Создать / Пати</button>
                 </div>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-                    Выбирайте боевую позицию отряда в зависимости от вашего класса и противника.
-                </p>
-                <div style="display:flex; gap:8px; margin-bottom:12px;">
-                    <button class="btn-block btn-secondary" onclick="window.game.setTactic('vanguard')">🛡️ В Авангарде (+15% Защиты)</button>
-                    <button class="btn-block btn-secondary" onclick="window.game.setTactic('rearguard')">🏹 В Арьергарде (+15% Атаки)</button>
-                </div>
-                <div style="font-size:13px; font-weight:700; margin-bottom:6px;">Члены рейда (Симуляция пати):</div>
-                <div style="display:flex; flex-direction:column; gap:6px;">
-                    <div class="forge-item">
-                        <div class="forge-info">
-                            <span style="font-size:22px;">🧙‍♂️</span>
-                            <div>
-                                <div style="font-weight:700; font-size:12px;">Мин Бён-Гу (Саппорт)</div>
-                                <div style="font-size:10px; color:var(--text-muted);">Пассивный реген +2% MP в ход</div>
-                            </div>
+
+                <!-- SUB-VIEW 1: БЫСТРЫЙ ПОИСК -->
+                <div id="party-subview-quick">
+                    <div style="text-align:center; padding:16px 8px;">
+                        <div style="font-size:36px; margin-bottom:8px;">⚡</div>
+                        <h3 style="font-size:16px; font-weight:800; color:#fff; margin-bottom:4px;">Быстрый подбор отряда</h3>
+                        <p style="font-size:11px; color:var(--text-muted); margin-bottom:14px;">
+                            Система автоматически подберёт рейд на самые высокие доступные Врата для вашего уровня. Разница в уровнях игроков строго ограничена (не более 10 уровней).
+                        </p>
+                        <div style="background:#0e1322; border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:14px; font-size:11px;">
+                            <span>⚠️ <strong>Рейдовые правила:</strong> здоровье и урон монстров растут за каждого охотника, но шанс дропа легендарных и уникальных реликвий удвоен!</span>
                         </div>
-                        <span style="color:var(--accent-green); font-size:11px; font-weight:700;">В СТРОЮ</span>
+                        <button class="btn-block btn-primary" style="padding:12px; font-size:13px;" onclick="window.game.quickJoinParty()">
+                            🚀 Вступить в лучшее пати
+                        </button>
                     </div>
-                    <div class="forge-item">
-                        <div class="forge-info">
-                            <span style="font-size:22px;">🗡️</span>
-                            <div>
-                                <div style="font-weight:700; font-size:12px;">Сон Чи-Ху (Следопыт)</div>
-                                <div style="font-size:10px; color:var(--text-muted);">+5% к Точности отряда</div>
-                            </div>
+                </div>
+
+                <!-- SUB-VIEW 2: СПИСОК СУЩЕСТВУЮЩИХ ПАТИ -->
+                <div id="party-subview-browse" style="display:none;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; font-weight:700; color:var(--text-muted);">Доступные группы (±10 уровней):</span>
+                        <button class="btn-secondary" style="padding:4px 8px; font-size:10px; border-radius:6px;" onclick="window.game.refreshLobbies()">🔄 Обновить</button>
+                    </div>
+                    <div id="party-lobbies-container">
+                        <!-- Заполняется динамически -->
+                    </div>
+                </div>
+
+                <!-- SUB-VIEW 3: СОЗДАНИЕ ИЛИ УПРАВЛЕНИЕ ТЕКУЩИМ ПАТИ -->
+                <div id="party-subview-manage" style="display:none;">
+                    <!-- Экран Создания (если пати нет) -->
+                    <div id="party-create-box">
+                        <div class="card-header" style="margin-bottom:8px;">
+                            <span class="card-title">⛩️ Создать Рейдовую Группу</span>
                         </div>
-                        <span style="color:var(--accent-green); font-size:11px; font-weight:700;">В СТРОЮ</span>
+                        <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+                            Выберите Врата, куда отправится отряд:
+                        </p>
+                        <select class="select-gate-input" id="party-gate-select"></select>
+
+                        <button class="btn-block btn-primary" onclick="window.game.createParty()">
+                            ➕ Создать отряд и открыть набор
+                        </button>
+                    </div>
+
+                    <!-- Экран Управления (если пати уже есть) -->
+                    <div id="party-room-box" style="display:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:6px;">
+                            <div>
+                                <span style="font-size:10px; color:var(--accent-gold); font-weight:800;" id="room-target-gate">ВРАТА: Лесные Врата</span>
+                                <h3 style="font-size:14px; font-weight:800; color:#fff;" id="room-party-name">Группа Охотников</h3>
+                            </div>
+                            <button style="background:none; border:none; font-size:20px; cursor:pointer;" onclick="window.game.togglePartySettings()" title="Настройки">⚙️</button>
+                        </div>
+
+                        <!-- 4 Слота участников -->
+                        <div class="party-members-grid" id="party-members-container"></div>
+
+                        <!-- Настройки пати (скрытые) -->
+                        <div id="party-settings-panel" style="display:none; background:#0c101c; border:1px solid var(--border-color); border-radius:8px; padding:8px; margin-bottom:10px; font-size:11px;">
+                            <div style="font-weight:700; margin-bottom:6px;">⚙️ Настройки Группы:</div>
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; margin-bottom:6px;">
+                                <input type="checkbox" id="party-setting-autoaccept" checked onchange="window.game.updatePartySettings()">
+                                <span>Авто-добор ботов/игроков до 4/4</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                                <input type="checkbox" id="party-setting-private" onchange="window.game.updatePartySettings()">
+                                <span>Закрытая группа (Только по приглашению)</span>
+                            </label>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn-block btn-primary" onclick="window.game.startPartyRaid()">⚔️ В бой (Рейд)</button>
+                            <button class="btn-block btn-danger" onclick="window.game.disbandParty()">⚠️ Распустить пати</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 3: FORGE (КУЗНИЦА) -->
+        <!-- TAB 3: FORGE (КУЗНИЦА + РЮКЗАК СО СНАРЯЖЕНИЕМ) -->
         <section id="tab-forge" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">🔨 Кузница Снаряжения</span>
-                    <span style="font-size:11px; color:var(--accent-gold);">Улучшение экипировки</span>
+                    <span class="card-title">🔨 Заточка Надетого Снаряжения</span>
+                    <span style="font-size:11px; color:var(--accent-gold);">10 Слотов</span>
                 </div>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-                    Закаляйте оружие и доспехи за золото, повышая 13 боевых параметров вашего охотника.
+                <div class="forge-slots-list" id="forge-upgrade-container"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🎒 Рюкзак Снаряжения (Дроп с Врат)</span>
+                    <span id="backpack-counter-text" style="font-size:11px; color:var(--accent-cyan); font-weight:700;">0 шт.</span>
+                </div>
+                <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+                    Выбитое в боях оружие, доспехи и бижутерия. Нажмите «Надеть» или продайте лишнее за золото:
                 </p>
-                <div class="forge-grid" id="forge-items-container"></div>
+                <div class="backpack-grid" id="backpack-grid-container"></div>
             </div>
         </section>
 
-        <!-- TAB 4: HERO (ГЕРОЙ) -->
+        <!-- TAB 4: HERO (ГЕРОЙ: КУКЛА 10 СЛОТОВ, СЕТ-БОНУС, СТАТЫ) -->
         <section id="tab-hero" class="tab-content">
-            <!-- Class Switching -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">👤 Выбор Специализации</span>
-                    <span style="font-size:11px; color:var(--accent-cyan);">Свободный выбор</span>
+                    <span class="card-title">👤 Кукла Охотника (10 Слотов)</span>
+                    <span id="hero-doll-class-badge" style="font-size:11px; color:var(--accent-cyan); font-weight:700;">Танк</span>
                 </div>
-                <div class="class-selector-grid">
-                    <button class="class-btn" id="btn-class-tank" onclick="window.game.switchClass('tank')">🛡️ Танк</button>
-                    <button class="class-btn" id="btn-class-healer" onclick="window.game.switchClass('healer')">💚 Хил</button>
-                    <button class="class-btn" id="btn-class-mage" onclick="window.game.switchClass('mage')">🔥 Маг</button>
-                    <button class="class-btn" id="btn-class-assassin" onclick="window.game.switchClass('assassin')">🗡️ Ассасин</button>
+
+                <div class="hero-doll-wrapper">
+                    <!-- Слева: 5 Частей Доспехов для Сета -->
+                    <div class="doll-col">
+                        <div class="doll-item-slot" id="slot-ui-helmet"></div>
+                        <div class="doll-item-slot" id="slot-ui-chest"></div>
+                        <div class="doll-item-slot" id="slot-ui-pants"></div>
+                        <div class="doll-item-slot" id="slot-ui-boots"></div>
+                        <div class="doll-item-slot" id="slot-ui-cloak"></div>
+                    </div>
+
+                    <!-- По центру: Аватар и статус -->
+                    <div class="doll-center-card">
+                        <div class="doll-hero-avatar" id="hero-doll-avatar">🛡️⚔️</div>
+                        <div style="font-size: 12px; font-weight:800; color:#fff;" id="hero-doll-name">Джин-Ву</div>
+                        <div style="font-size: 10px; font-weight:800; color:var(--accent-purple);" id="hero-doll-rank">E-РАНГ</div>
+                    </div>
+
+                    <!-- Справа: Оружие + 4 слота бижутерии -->
+                    <div class="doll-col">
+                        <div class="doll-item-slot right-align" id="slot-ui-weapon"></div>
+                        <div class="doll-item-slot right-align" id="slot-ui-necklace"></div>
+                        <div class="doll-item-slot right-align" id="slot-ui-signet"></div>
+                        <div class="doll-item-slot right-align" id="slot-ui-ring1"></div>
+                        <div class="doll-item-slot right-align" id="slot-ui-ring2"></div>
+                    </div>
                 </div>
-                <div id="class-desc-box" style="font-size:11px; color:var(--text-muted); background:#0c101c; padding:8px; border-radius:6px;">
-                    <!-- Filled dynamically -->
-                </div>
+
+                <!-- Плашка Сет-бонуса (5/5) -->
+                <div class="set-bonus-banner" id="set-bonus-banner"></div>
             </div>
 
             <!-- 5 Core Attributes Stepper -->
@@ -1002,41 +1423,46 @@
                 </div>
             </div>
 
-            <!-- 13 Combat Parameters -->
+            <!-- 14 Боевых Параметров -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📊 13 Боевых Параметров</span>
+                    <span class="card-title">📊 14 Боевых Параметров</span>
                     <span style="font-size:10px; color:var(--text-muted);">Итоговый расчёт</span>
                 </div>
                 <div class="parameters-grid" id="parameters-display-grid"></div>
             </div>
         </section>
 
-        <!-- TAB 5: MORE (ЕЩЁ) -->
+        <!-- TAB 5: MORE (ЕЩЁ: ВЫБОР СПЕЦИАЛИЗАЦИИ И СЛОТЫ) -->
         <section id="tab-more" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🎭 Специализация (Классы)</span>
+                    <span style="font-size:11px; color:var(--accent-cyan);">Выбор роли</span>
+                </div>
+                <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+                    Оружие привязано к классу: Танк носит Меч/Щит, Маг и Хил — Посохи, Ассасин — Кинжалы.
+                </p>
+                <div class="class-selector-grid">
+                    <button class="class-btn" id="btn-class-tank" onclick="window.game.switchClass('tank')">🛡️ Танк</button>
+                    <button class="class-btn" id="btn-class-healer" onclick="window.game.switchClass('healer')">💚 Хил</button>
+                    <button class="class-btn" id="btn-class-mage" onclick="window.game.switchClass('mage')">🔥 Маг</button>
+                    <button class="class-btn" id="btn-class-assassin" onclick="window.game.switchClass('assassin')">🗡️ Ассасин</button>
+                </div>
+                <div id="class-desc-box" style="font-size:11px; color:var(--text-muted); background:#0c101c; padding:8px; border-radius:6px;">
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">💾 Слоты Сохранений</span>
                 </div>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
-                    Вы можете переключаться между 3 персонажами в локальном хранилище.
-                </p>
-                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                <div style="display:flex; gap:6px; margin-bottom:10px;">
                     <button class="btn-block btn-secondary" id="slot-btn-1" onclick="window.game.changeSlot(1)">Слот 1</button>
                     <button class="btn-block btn-secondary" id="slot-btn-2" onclick="window.game.changeSlot(2)">Слот 2</button>
                     <button class="btn-block btn-secondary" id="slot-btn-3" onclick="window.game.changeSlot(3)">Слот 3</button>
                 </div>
                 <button class="btn-block btn-danger" onclick="window.game.resetCurrentSlotData()">⚠️ Сбросить текущий слот</button>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">⚙️ Настройки Telegram</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span>Тактильная отдача (Вибрация)</span>
-                    <button class="btn-block btn-secondary" style="max-width:80px;" id="btn-toggle-haptic" onclick="window.game.toggleHaptic()">ВКЛ</button>
-                </div>
             </div>
         </section>
 
@@ -1075,34 +1501,45 @@
 
     <script>
     /* =========================================================================
-       SOLO LEVELING MINI-APP ENGINE - COMPLETE BUG-FREE LOGIC
+       SOLO LEVELING MINI-APP ENGINE - REVISED LOBBY & PARTY SYSTEM
        ========================================================================= */
     (function () {
         'use strict';
 
-        // 1. Telegram WebApp Integration
         const tg = window.Telegram?.WebApp;
         if (tg) {
             try {
                 tg.ready();
                 tg.expand();
+                tg.setHeaderColor('#0a0c14');
+                tg.setBackgroundColor('#0a0c14');
             } catch (e) {
                 console.warn('Telegram SDK initialization:', e);
             }
         }
 
-        function triggerHaptic(type = 'medium') {
-            if (!state.haptics) return;
-            if (tg?.HapticFeedback) {
-                if (type === 'success' || type === 'error' || type === 'warning') {
-                    tg.HapticFeedback.notificationOccurred(type);
-                } else {
-                    tg.HapticFeedback.impactOccurred(type);
+        function triggerHaptic(type = 'light') {
+            if (!tg?.HapticFeedback) return;
+            try {
+                switch (type) {
+                    case 'success': tg.HapticFeedback.notificationOccurred('success'); break;
+                    case 'warning': tg.HapticFeedback.notificationOccurred('warning'); break;
+                    case 'error': tg.HapticFeedback.notificationOccurred('error'); break;
+                    case 'heavy': tg.HapticFeedback.impactOccurred('heavy'); break;
+                    case 'medium': tg.HapticFeedback.impactOccurred('medium'); break;
+                    default: tg.HapticFeedback.impactOccurred('light');
                 }
-            }
+            } catch (e) {}
         }
 
-        // 2. Constants & Data Mapping
+        function showToast(message, duration = 2000) {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, duration);
+        }
+
         const RANKS = [
             { minLv: 1,  name: 'E-РАНГ', color: '#8e9aaf' },
             { minLv: 11, name: 'D-РАНГ', color: '#52b788' },
@@ -1129,15 +1566,30 @@
             { id: 10, name: 'Астральный Предел', minLv: 91, boss: 'Абсолют', bossIcon: '🌌', mobIcon: '✨', desc: 'Финал познания вселенной и абсолютной силы.' }
         ];
 
+        const RARITIES = {
+            common:    { name: 'Обычное',    color: 'var(--rarity-common)',    hex: '#ffffff', mult: 1.0, costMult: 1.0 },
+            uncommon:  { name: 'Необычное',  color: 'var(--rarity-uncommon)',  hex: '#00ff88', mult: 1.3, costMult: 1.6 },
+            rare:      { name: 'Редкое',     color: 'var(--rarity-rare)',      hex: '#0072ff', mult: 1.7, costMult: 2.5 },
+            epic:      { name: 'Эпическое',  color: 'var(--rarity-epic)',      hex: '#a855f7', mult: 2.3, costMult: 4.0 },
+            legendary: { name: 'Легендарное',color: 'var(--rarity-legendary)', hex: '#ff8c00', mult: 3.2, costMult: 7.0 },
+            unique:    { name: 'Уникальное', color: 'var(--rarity-unique)',    hex: '#ff3344', mult: 4.5, costMult: 12.0 },
+            world:     { name: 'Мировое',    color: 'var(--rarity-world)',     hex: '#ffff00', mult: 6.5, costMult: 22.0 }
+        };
+
+        const ARMOR_WEIGHTS = {
+            light:  { name: 'Лёгкое',  tag: 'Лёгк.' },
+            medium: { name: 'Среднее', tag: 'Сред.' },
+            heavy:  { name: 'Тяжёлое', tag: 'Тяж.' }
+        };
+
         const CLASS_CONFIGS = {
             tank: {
                 name: 'Танк',
-                icon: '🛡️',
-                desc: 'Преимущество: +50% урона по Ассасинам. Слабость: +20% входящего урона от Магов.',
-                hpMult: 1.25,
-                defMult: 1.30,
-                dmgMult: 1.0,
-                mpMult: 1.0,
+                icon: '🛡️⚔️',
+                weaponType: 'sword_shield',
+                weaponName: 'Меч и Щит',
+                desc: 'Преимущество: +50% урона по Ассасинам. Слабость: +20% входящего урона от Магов. Оружие: Меч и Щит.',
+                hpMult: 1.25, defMult: 1.30, dmgMult: 1.0, mpMult: 1.0,
                 skills: [
                     { id: 'skill_1', name: '🛡️ Укрепление', mp: 20, desc: '+50% Защиты на этот ход' },
                     { id: 'skill_2', name: '💥 Отражение', mp: 30, desc: '1.2x урон и контратака' },
@@ -1146,12 +1598,11 @@
             },
             healer: {
                 name: 'Целитель',
-                icon: '💚',
-                desc: 'Нейтральный баланс. +50% получаемого золота. +35% святого урона по Нежити.',
-                hpMult: 1.05,
-                defMult: 1.0,
-                dmgMult: 1.0,
-                mpMult: 1.25,
+                icon: '💚🪄',
+                weaponType: 'staff',
+                weaponName: 'Посох',
+                desc: 'Нейтральный баланс. +50% золота. +35% святого урона по Нежити. Оружие: Посох.',
+                hpMult: 1.05, defMult: 1.0, dmgMult: 1.0, mpMult: 1.25,
                 skills: [
                     { id: 'skill_1', name: '✨ Благословение', mp: 20, desc: '+40 MP и малый реген' },
                     { id: 'skill_2', name: '💖 Исцеление', mp: 25, desc: 'Восстанавливает +30% HP' },
@@ -1160,12 +1611,11 @@
             },
             mage: {
                 name: 'Маг',
-                icon: '🔥',
-                desc: 'Преимущество: +50% урона по Танкам. Слабость: +20% входящего урона от Ассасинов.',
-                hpMult: 0.90,
-                defMult: 0.90,
-                dmgMult: 1.20,
-                mpMult: 1.35,
+                icon: '🔥🪄',
+                weaponType: 'staff',
+                weaponName: 'Посох',
+                desc: 'Преимущество: +50% урона по Танкам. Слабость: +20% входящего урона от Ассасинов. Оружие: Посох.',
+                hpMult: 0.90, defMult: 0.90, dmgMult: 1.20, mpMult: 1.35,
                 skills: [
                     { id: 'skill_1', name: '🔥 Огненная Стрела', mp: 25, desc: '1.6x маг. урон' },
                     { id: 'skill_2', name: '❄️ Глубокая Заморозка', mp: 35, desc: '1.3x урон + Оглушение' },
@@ -1174,12 +1624,11 @@
             },
             assassin: {
                 name: 'Ассасин',
-                icon: '🗡️',
-                desc: 'Преимущество: +50% урона по Магам. Слабость: +20% входящего урона от Танков.',
-                hpMult: 0.95,
-                defMult: 0.90,
-                dmgMult: 1.15,
-                mpMult: 1.0,
+                icon: '🗡️⚡',
+                weaponType: 'dagger',
+                weaponName: 'Кинжалы',
+                desc: 'Преимущество: +50% урона по Магам. Слабость: +20% входящего урона от Танков. Оружие: Кинжалы.',
+                hpMult: 0.95, defMult: 0.90, dmgMult: 1.15, mpMult: 1.0,
                 skills: [
                     { id: 'skill_1', name: '🗡️ Удар в Спину', mp: 20, desc: '1.8x критический выпад' },
                     { id: 'skill_2', name: '☠️ Теневой Яд', mp: 25, desc: '1.4x урон + отравление' },
@@ -1188,19 +1637,95 @@
             }
         };
 
-        // 3. State Management with Multi-slot Support
+        function makeItem(slotKey, rarityKey, weight = null, weaponType = null, enhance = 0) {
+            const rData = RARITIES[rarityKey];
+            const uid = 'item_' + Math.random().toString(36).substring(2, 11);
+            const m = rData.mult;
+
+            let name = '';
+            let icon = '📦';
+            let stats = {};
+
+            if (slotKey === 'weapon') {
+                const wType = weaponType || 'sword_shield';
+                if (wType === 'sword_shield') {
+                    name = `Меч и Щит Стража`; icon = '🛡️⚔️';
+                    stats = { atk: Math.round(15 * m), def: Math.round(8 * m) };
+                } else if (wType === 'staff') {
+                    name = `Посох Арканы`; icon = '🪄';
+                    stats = { atk: Math.round(18 * m), mp: Math.round(30 * m) };
+                } else if (wType === 'dagger') {
+                    name = `Теневые Клинки`; icon = '🗡️';
+                    stats = { atk: Math.round(17 * m), crit: Math.round(5 * m) };
+                }
+                return { uid, slot: 'weapon', name, icon, rarity: rarityKey, weaponType: wType, stats, enhance, basePrice: Math.round(30 * rData.costMult) };
+            }
+
+            const w = weight || 'heavy';
+            const wName = ARMOR_WEIGHTS[w].name;
+
+            if (slotKey === 'helmet') {
+                icon = '🪖'; name = `${wName} Шлем`;
+                stats = w === 'heavy' ? { def: Math.round(8 * m), hp: Math.round(40 * m) } :
+                        w === 'medium' ? { def: Math.round(6 * m), crit: Math.round(2 * m) } : { def: Math.round(4 * m), speed: Math.round(4 * m) };
+            } else if (slotKey === 'chest') {
+                icon = '🥋'; name = `${wName} Доспех`;
+                stats = w === 'heavy' ? { def: Math.round(14 * m), hp: Math.round(80 * m) } :
+                        w === 'medium' ? { def: Math.round(10 * m), atk: Math.round(5 * m) } : { def: Math.round(6 * m), evasion: Math.round(4 * m) };
+            } else if (slotKey === 'pants') {
+                icon = '👖'; name = `${wName} Поножи`;
+                stats = w === 'heavy' ? { def: Math.round(9 * m), hp: Math.round(50 * m) } :
+                        w === 'medium' ? { def: Math.round(7 * m), penetration: Math.round(3 * m) } : { def: Math.round(5 * m), speed: Math.round(5 * m) };
+            } else if (slotKey === 'boots') {
+                icon = '🥾'; name = `${wName} Сапоги`;
+                stats = w === 'heavy' ? { def: Math.round(6 * m), hp: Math.round(30 * m) } :
+                        w === 'medium' ? { def: Math.round(5 * m), speed: Math.round(4 * m) } : { def: Math.round(3 * m), speed: Math.round(8 * m), evasion: Math.round(3 * m) };
+            } else if (slotKey === 'cloak') {
+                icon = '🧣'; name = `${wName} Плащ`;
+                stats = w === 'heavy' ? { def: Math.round(7 * m), dmgResist: Math.round(3 * m) } :
+                        w === 'medium' ? { def: Math.round(5 * m), atk: Math.round(4 * m) } : { def: Math.round(3 * m), crit: Math.round(4 * m) };
+            } else if (slotKey === 'necklace') {
+                icon = '📿'; name = `Амулет Душ`; stats = { hp: Math.round(60 * m), mp: Math.round(40 * m) };
+            } else if (slotKey === 'signet') {
+                icon = '💍'; name = `Перстень Монарха`; stats = { atk: Math.round(10 * m), mp: Math.round(50 * m) };
+            } else if (slotKey === 'ring1') {
+                icon = '🔘'; name = `Кольцо Власти I`; stats = { crit: Math.round(4 * m), atk: Math.round(6 * m) };
+            } else if (slotKey === 'ring2') {
+                icon = '🔘'; name = `Кольцо Власти II`; stats = { critDmg: Math.round(15 * m), hp: Math.round(45 * m) };
+            }
+
+            return { uid, slot: slotKey, name, icon, rarity: rarityKey, weight: ['helmet', 'chest', 'pants', 'boots', 'cloak'].includes(slotKey) ? w : null, stats, enhance, basePrice: Math.round(25 * rData.costMult) };
+        }
+
+        function createDefaultEquipped(charClass = 'tank') {
+            const wType = CLASS_CONFIGS[charClass].weaponType;
+            return {
+                weapon: makeItem('weapon', 'common', null, wType),
+                helmet: makeItem('helmet', 'common', 'heavy'),
+                chest: makeItem('chest', 'common', 'heavy'),
+                pants: makeItem('pants', 'common', 'heavy'),
+                boots: makeItem('boots', 'common', 'heavy'),
+                cloak: makeItem('cloak', 'common', 'heavy'),
+                necklace: makeItem('necklace', 'common'),
+                signet: makeItem('signet', 'common'),
+                ring1: makeItem('ring1', 'common'),
+                ring2: makeItem('ring2', 'common')
+            };
+        }
+
         const DEFAULT_STATE = {
             slotId: 1,
             name: 'Джин-Ву',
             level: 1,
             exp: 0,
-            gold: 250,
+            gold: 200,
             charClass: 'tank',
-            tactic: 'vanguard', // 'vanguard' | 'rearguard'
+            tactic: 'vanguard',
             stats: { str: 10, agi: 10, end: 10, int: 10, per: 10 },
             freePoints: 10,
-            equip: { weapon: 0, armor: 0, helmet: 0, ring: 0 },
-            haptics: true
+            equipped: null,
+            backpack: [],
+            currentParty: null
         };
 
         let currentSlot = 1;
@@ -1208,72 +1733,175 @@
         let pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
         let computed = {};
 
-        // Combat Session State
-        const TURN_TIME_SEC = 20.0;
-        let activeCombat = null;
-        let combatTimerId = null;
-        let timerEndTimestamp = 0;
-        let isActionLocked = false;
+        function deepMerge(target, source) {
+            const result = { ...target };
+            for (const key in source) {
+                if (source[key] !== null && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                    result[key] = deepMerge(target[key] || {}, source[key]);
+                } else {
+                    result[key] = source[key];
+                }
+            }
+            return result;
+        }
 
-        function loadSlot(slotId) {
+        async function cloudSave(slotId, data) {
+            if (!tg?.CloudStorage) {
+                localStorage.setItem(`sl_save_slot_${slotId}`, JSON.stringify(data));
+                return;
+            }
+            try {
+                await tg.CloudStorage.setItem(`sl_save_slot_${slotId}`, JSON.stringify(data));
+            } catch (e) {
+                localStorage.setItem(`sl_save_slot_${slotId}`, JSON.stringify(data));
+            }
+        }
+
+        async function cloudLoad(slotId) {
+            if (!tg?.CloudStorage) return localStorage.getItem(`sl_save_slot_${slotId}`);
+            try {
+                return await tg.CloudStorage.getItem(`sl_save_slot_${slotId}`);
+            } catch (e) {
+                return localStorage.getItem(`sl_save_slot_${slotId}`);
+            }
+        }
+
+        async function cloudRemove(slotId) {
+            if (!tg?.CloudStorage) {
+                localStorage.removeItem(`sl_save_slot_${slotId}`);
+                return;
+            }
+            try {
+                await tg.CloudStorage.removeItem(`sl_save_slot_${slotId}`);
+            } catch (e) {
+                localStorage.removeItem(`sl_save_slot_${slotId}`);
+            }
+        }
+
+        async function loadSlot(slotId) {
             currentSlot = slotId;
-            const key = `sl_save_slot_${slotId}`;
-            const raw = localStorage.getItem(key);
+            const raw = await cloudLoad(slotId);
+            
             if (raw) {
                 try {
-                    state = Object.assign({}, DEFAULT_STATE, JSON.parse(raw));
+                    const parsed = JSON.parse(raw);
+                    state = deepMerge(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
                 } catch (e) {
                     state = JSON.parse(JSON.stringify(DEFAULT_STATE));
                 }
             } else {
                 state = JSON.parse(JSON.stringify(DEFAULT_STATE));
             }
+
             state.slotId = slotId;
+            if (!state.equipped || !state.equipped.necklace || !state.equipped.cloak) {
+                state.equipped = createDefaultEquipped(state.charClass || 'tank');
+            }
+            if (!Array.isArray(state.backpack)) state.backpack = [];
+
             pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
             recalcParameters();
-            saveCurrentSlot();
+            
+            const tgUser = tg?.initDataUnsafe?.user;
+            if (tgUser && state.name === 'Джин-Ву') {
+                state.name = tgUser.first_name || 'Охотник';
+            }
+            
+            await saveCurrentSlot();
         }
 
-        function saveCurrentSlot() {
-            const key = `sl_save_slot_${currentSlot}`;
-            localStorage.setItem(key, JSON.stringify(state));
+        async function saveCurrentSlot() {
+            await cloudSave(currentSlot, state);
         }
 
-        // 4. Combat Parameter Calculation Engine (13 Parameters)
-        function recalcParameters() {
+        function getArmorSetBonus() {
+            const armorSlots = ['helmet', 'chest', 'pants', 'boots', 'cloak'];
+            const firstWeight = state.equipped.helmet?.weight;
+            if (!firstWeight) return { active: false, type: null, text: 'Сет не собран' };
+
+            const allSame = armorSlots.every(slot => state.equipped[slot] && state.equipped[slot].weight === firstWeight);
+
+            if (allSame) {
+                if (firstWeight === 'light') {
+                    return { active: true, type: 'light', name: 'Сет Лёгких Доспехов (5/5)', desc: '+20% Крит. шанс, +25 Скорость, +15% Уклонение' };
+                } else if (firstWeight === 'medium') {
+                    return { active: true, type: 'medium', name: 'Сет Средних Доспехов (5/5)', desc: '+15% Общий Урон, +15% Защита, +10% Пробитие' };
+                } else if (firstWeight === 'heavy') {
+                    return { active: true, type: 'heavy', name: 'Сет Тяжёлых Доспехов (5/5)', desc: '+30% Макс. HP, +25% Защита, +15% Сопротивление урону' };
+                }
+            }
+
+            const counts = { light: 0, medium: 0, heavy: 0 };
+            armorSlots.forEach(s => {
+                if (state.equipped[s]?.weight) counts[state.equipped[s].weight]++;
+            });
+            const maxPieces = Math.max(counts.light, counts.medium, counts.heavy);
+            return { active: false, type: null, name: `Сет брони разрознен (${maxPieces}/5)`, desc: 'Бонус сета отключён! Требуется 5/5 одинакового типа брони.' };
+        }
+
+        function calculateStatsEngine(statsObject) {
             const cfg = CLASS_CONFIGS[state.charClass];
-            const s = {
+            const s = statsObject;
+            const tacticAtkMult = state.tactic === 'rearguard' ? 1.15 : 1.0;
+            const tacticDefMult = state.tactic === 'vanguard' ? 1.15 : 1.0;
+
+            let eqAtk = 0, eqDef = 0, eqHp = 0, eqMp = 0, eqCrit = 0, eqCritDmg = 0;
+            let eqSpeed = 0, eqEvasion = 0, eqPen = 0, eqResist = 0;
+
+            if (state.equipped) {
+                Object.values(state.equipped).forEach(item => {
+                    if (!item) return;
+                    const enhMult = 1 + (item.enhance * 0.10);
+                    if (item.stats.atk) eqAtk += Math.round(item.stats.atk * enhMult);
+                    if (item.stats.def) eqDef += Math.round(item.stats.def * enhMult);
+                    if (item.stats.hp) eqHp += Math.round(item.stats.hp * enhMult);
+                    if (item.stats.mp) eqMp += Math.round(item.stats.mp * enhMult);
+                    if (item.stats.crit) eqCrit += Math.round(item.stats.crit * enhMult);
+                    if (item.stats.critDmg) eqCritDmg += Math.round(item.stats.critDmg * enhMult);
+                    if (item.stats.speed) eqSpeed += Math.round(item.stats.speed * enhMult);
+                    if (item.stats.evasion) eqEvasion += Math.round(item.stats.evasion * enhMult);
+                    if (item.stats.penetration) eqPen += Math.round(item.stats.penetration * enhMult);
+                    if (item.stats.dmgResist) eqResist += Math.round(item.stats.dmgResist * enhMult);
+                });
+            }
+
+            const setBonus = getArmorSetBonus();
+            let setAtkMult = 1.0, setDefMult = 1.0, setHpMult = 1.0;
+            let setCritBonus = 0, setSpeedBonus = 0, setEvasionBonus = 0, setPenBonus = 0, setResistBonus = 0;
+
+            if (setBonus.active) {
+                if (setBonus.type === 'light') { setCritBonus = 20; setSpeedBonus = 25; setEvasionBonus = 15; }
+                else if (setBonus.type === 'medium') { setAtkMult = 1.15; setDefMult = 1.15; setPenBonus = 10; }
+                else if (setBonus.type === 'heavy') { setHpMult = 1.30; setDefMult = 1.25; setResistBonus = 15; }
+            }
+
+            const maxHp = Math.round(((150 + (s.end * 20) + (state.level * 10) + eqHp) * cfg.hpMult) * setHpMult);
+            const maxMp = Math.round((100 + (s.int * 15) + eqMp) * cfg.mpMult);
+            const attack = Math.round((((10 + (s.str * 3) + eqAtk) * cfg.dmgMult) * tacticAtkMult) * setAtkMult);
+            const defense = Math.round((((5 + (s.str * 1.5) + (s.end * 1.5) + eqDef) * cfg.defMult) * tacticDefMult) * setDefMult);
+            const crit = Math.min(85, Math.round(5 + (s.agi * 0.4) + eqCrit + setCritBonus));
+            const critDmg = Math.round(150 + (s.per * 3) + eqCritDmg);
+            const accuracy = Math.min(100, Math.round(85 + (s.per * 0.6)));
+            const evasion = Math.min(60, Math.round(5 + (s.agi * 0.5) + eqEvasion + setEvasionBonus));
+            const dmgResist = Math.min(65, Math.round((s.end * 0.3) + eqResist + setResistBonus));
+            const speed = Math.round(10 + (s.agi * 0.5) + eqSpeed + setSpeedBonus);
+            const reaction = Math.round(10 + s.agi + s.per);
+            const penetration = Math.min(60, Math.round((s.str * 0.5) + (s.per * 0.5) + eqPen + setPenBonus));
+            const skillPower = Math.round(s.int * 2);
+            const vampirism = Math.min(30, Math.round(s.int * 0.2));
+
+            return { maxHp, maxMp, attack, defense, crit, critDmg, accuracy, evasion, dmgResist, speed, reaction, penetration, skillPower, vampirism };
+        }
+
+        function recalcParameters() {
+            const currentStats = {
                 str: state.stats.str + pendingAlloc.str,
                 agi: state.stats.agi + pendingAlloc.agi,
                 end: state.stats.end + pendingAlloc.end,
                 int: state.stats.int + pendingAlloc.int,
                 per: state.stats.per + pendingAlloc.per
             };
-
-            const eq = state.equip;
-            const tacticAtkMult = state.tactic === 'rearguard' ? 1.15 : 1.0;
-            const tacticDefMult = state.tactic === 'vanguard' ? 1.15 : 1.0;
-
-            const maxHp = Math.round((150 + (s.end * 20) + (state.level * 10)) * cfg.hpMult);
-            const maxMp = Math.round((100 + (s.int * 15) + (eq.ring * 25)) * cfg.mpMult);
-            const attack = Math.round(((10 + (s.str * 3) + (eq.weapon * 8)) * cfg.dmgMult) * tacticAtkMult);
-            const defense = Math.round(((5 + (s.str * 1.5) + (s.end * 1.5) + (eq.armor * 7)) * cfg.defMult) * tacticDefMult);
-            const crit = Math.min(75, Math.round(5 + (s.agi * 0.4) + (eq.helmet * 1.5)));
-            const critDmg = Math.round(150 + (s.per * 3));
-            const accuracy = Math.min(100, Math.round(85 + (s.per * 0.6)));
-            const evasion = Math.min(50, Math.round(5 + (s.agi * 0.5)));
-            const dmgResist = Math.min(60, Math.round(s.end * 0.3));
-            const speed = Math.round(10 + (s.agi * 0.5));
-            const reaction = Math.round(10 + s.agi + s.per);
-            const penetration = Math.min(50, Math.round((s.str * 0.5) + (s.per * 0.5)));
-            const skillPower = Math.round(s.int * 2);
-            const vampirism = Math.min(30, Math.round(s.int * 0.2));
-
-            computed = {
-                maxHp, maxMp, attack, defense, crit, critDmg,
-                accuracy, evasion, dmgResist, speed, reaction,
-                penetration, skillPower, vampirism
-            };
+            computed = calculateStatsEngine(currentStats);
         }
 
         function getHeroRank(lv) {
@@ -1283,15 +1911,208 @@
             return RANKS[0];
         }
 
-        // 5. Gate Generation & Stage Spawning
+        // =====================================================================
+        // ADVANCED PARTY & LOBBY SIMULATOR ENGINE
+        // =====================================================================
+        let simulatedLobbies = [];
+        const BOT_NAMES = ['Сон Джин-А', 'Чхве Джон-Ин', 'Ча Хэ-Ин', 'Пэк Юн-Хо', 'Ли Мин-Сон', 'Ким Чхоль', 'Хан Сон-И', 'Кан Тхэ-Шик', 'Ю Джин-Хо'];
+
+        function generateSimulatedLobbies() {
+            simulatedLobbies = [];
+            GATES.forEach(gate => {
+                const count = Math.floor(Math.random() * 2) + 1;
+                for (let i = 0; i < count; i++) {
+                    const leaderLv = Math.max(1, gate.minLv + Math.floor(Math.random() * 6));
+                    const classes = ['tank', 'healer', 'mage', 'assassin'];
+                    const leaderClass = classes[Math.floor(Math.random() * classes.length)];
+                    const leaderName = BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)] + ` [${leaderLv}]`;
+
+                    const memberCount = Math.floor(Math.random() * 3) + 1; // 1 to 3 members
+                    const members = [{ id: 'leader_' + Math.random().toString(36).substring(2,7), name: leaderName, level: leaderLv, charClass: leaderClass, isLeader: true }];
+
+                    for (let m = 1; m < memberCount; m++) {
+                        const mClass = classes[Math.floor(Math.random() * classes.length)];
+                        const mLv = Math.max(1, leaderLv + Math.floor(Math.random() * 5) - 2);
+                        members.push({
+                            id: 'bot_' + Math.random().toString(36).substring(2,7),
+                            name: BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)] + ` [${mLv}]`,
+                            level: mLv,
+                            charClass: mClass,
+                            isLeader: false
+                        });
+                    }
+
+                    simulatedLobbies.push({
+                        id: 'lobby_' + gate.id + '_' + i,
+                        gateId: gate.id,
+                        gateName: gate.name,
+                        gateMinLv: gate.minLv,
+                        leaderName: leaderName,
+                        leaderLevel: leaderLv,
+                        members: members,
+                        isPrivate: false,
+                        autoAccept: true
+                    });
+                }
+            });
+        }
+
+        let activePartyView = 'quick'; // 'quick' | 'browse' | 'manage'
+
+        function renderPartyTabSystem() {
+            // Render sub-tabs buttons
+            ['quick', 'browse', 'manage'].forEach(tab => {
+                const btn = document.getElementById(`btn-sub-${tab}`);
+                const view = document.getElementById(`party-subview-${tab}`);
+                if (btn) btn.classList.toggle('active', activePartyView === tab);
+                if (view) view.style.display = (activePartyView === tab) ? 'block' : 'none';
+            });
+
+            if (activePartyView === 'browse') renderPartyBrowseView();
+            if (activePartyView === 'manage') renderPartyManageView();
+        }
+
+        function renderPartyBrowseView() {
+            const container = document.getElementById('party-lobbies-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const playerLv = state.level;
+            // Показываем пати, где разница в уровнях с лидером НЕ более 10 и игрок допущен к вратам
+            const validLobbies = simulatedLobbies.filter(l => {
+                const lvDiff = Math.abs(l.leaderLevel - playerLv);
+                return lvDiff <= 10 && !l.isPrivate && l.members.length < 4;
+            });
+
+            if (validLobbies.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">
+                        Сейчас нет доступных групп с разницей уровня до 10. Попробуйте нажать «Обновить» или создайте своё пати!
+                    </div>
+                `;
+                return;
+            }
+
+            validLobbies.forEach(lobby => {
+                const card = document.createElement('div');
+                card.className = 'party-lobby-card';
+                card.innerHTML = `
+                    <div class="party-lobby-info">
+                        <h4>⛩️ ${lobby.gateName}</h4>
+                        <div class="party-lobby-meta">
+                            Лидер: <strong style="color:#fff;">${lobby.leaderName}</strong> • Состав: <span style="color:var(--accent-cyan); font-weight:700;">${lobby.members.length}/4</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="padding:6px 12px; font-size:11px; border-radius:6px;" onclick="window.game.joinExistingParty('${lobby.id}')">
+                        Войти
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderPartyManageView() {
+            const createBox = document.getElementById('party-create-box');
+            const roomBox = document.getElementById('party-room-box');
+            const gateSelect = document.getElementById('party-gate-select');
+
+            if (!state.currentParty) {
+                createBox.style.display = 'block';
+                roomBox.style.display = 'none';
+
+                if (gateSelect) {
+                    gateSelect.innerHTML = '';
+                    GATES.forEach(g => {
+                        const opt = document.createElement('option');
+                        opt.value = g.id;
+                        opt.textContent = `${g.name} (Ур. ${g.minLv}+)`;
+                        if (state.level < g.minLv) opt.disabled = true;
+                        gateSelect.appendChild(opt);
+                    });
+                }
+            } else {
+                createBox.style.display = 'none';
+                roomBox.style.display = 'block';
+
+                const p = state.currentParty;
+                const gate = GATES.find(g => g.id === p.gateId) || GATES[0];
+                document.getElementById('room-target-gate').textContent = `ВРАТА: ${gate.name} (Ур. ${gate.minLv}+)`;
+                document.getElementById('room-party-name').textContent = p.name;
+
+                const membersGrid = document.getElementById('party-members-container');
+                membersGrid.innerHTML = '';
+
+                // Отрисовка 4 слотов
+                for (let i = 0; i < 4; i++) {
+                    const m = p.members[i];
+                    const slotEl = document.createElement('div');
+                    if (m) {
+                        slotEl.className = 'party-member-slot occupied';
+                        const cfg = CLASS_CONFIGS[m.charClass] || CLASS_CONFIGS.tank;
+                        const isMe = m.id === 'player_me';
+                        const amILeader = p.leaderId === 'player_me';
+                        const showKick = amILeader && !isMe;
+
+                        slotEl.innerHTML = `
+                            <div class="party-member-info">
+                                <span style="font-size:20px;">${cfg.icon}</span>
+                                <div>
+                                    <div class="party-member-name" style="${isMe ? 'color:var(--accent-cyan);' : 'color:#fff;'}">
+                                        ${m.name} ${m.isLeader ? '👑' : ''}
+                                    </div>
+                                    <div style="font-size:9px; color:var(--text-muted);">${m.level} ур. • ${cfg.name}</div>
+                                </div>
+                            </div>
+                            ${showKick ? `<button class="btn-kick-member" onclick="window.game.kickPartyMember('${m.id}')" title="Исключить">❌</button>` : ''}
+                        `;
+                    } else {
+                        slotEl.className = 'party-member-slot';
+                        slotEl.innerHTML = `
+                            <div style="color:var(--text-muted); font-size:11px; text-align:center; width:100%;">
+                                ➕ Свободный слот
+                            </div>
+                        `;
+                    }
+                    membersGrid.appendChild(slotEl);
+                }
+            }
+        }
+
+        // =====================================================================
+        // COMBAT SYSTEM (С УЧЕТОМ ПАТИ И УСИЛЕННЫХ ДАНЖЕЙ)
+        // =====================================================================
+        const TURN_TIME_SEC = 20.0;
+        let activeCombat = null;
+        let combatTimerId = null;
+        let timerEndTimestamp = 0;
+        let isActionLocked = false;
+        let activeTimeouts = [];
+
+        function clearAllTimers() {
+            if (combatTimerId) { clearInterval(combatTimerId); combatTimerId = null; }
+            activeTimeouts.forEach(id => clearTimeout(id));
+            activeTimeouts = [];
+        }
+
+        function addTimeout(fn, delay) {
+            const id = setTimeout(fn, delay);
+            activeTimeouts.push(id);
+            return id;
+        }
+
         function getMonsterForStage(gate, stage) {
             const isBoss = stage === 10;
             const levelScale = gate.minLv + stage - 1;
-            const hpBase = (100 + (levelScale * 40)) * (isBoss ? 2.8 : 1.0);
-            const atkBase = (15 + (levelScale * 7)) * (isBoss ? 1.4 : 1.0);
+
+            // Множитель сложности пати
+            const partyCount = state.currentParty ? state.currentParty.members.length : 1;
+            const partyHpScale = 1 + (partyCount - 1) * 0.60;   // +60% HP за охотника
+            const partyAtkScale = 1 + (partyCount - 1) * 0.20;  // +20% ATK за охотника
+
+            const hpBase = (100 + (levelScale * 40)) * (isBoss ? 2.8 : 1.0) * partyHpScale;
+            const atkBase = (15 + (levelScale * 7)) * (isBoss ? 1.4 : 1.0) * partyAtkScale;
             const defBase = (5 + (levelScale * 3)) * (isBoss ? 1.3 : 1.0);
 
-            // Rock-paper-scissors class assignment for mob
             const types = ['tank', 'mage', 'assassin'];
             const mobType = isBoss ? 'tank' : types[Math.floor(Math.random() * types.length)];
 
@@ -1310,23 +2131,17 @@
 
         function pickEnemyIntent(enemy) {
             const choices = [
-                { name: '⚔️ Обычная атака (1.0x)', mult: 1.0, isBlock: false, isStun: false },
-                { name: '🗡️ Быстрый выпад (0.75x)', mult: 0.75, isBlock: false, isStun: false },
-                { name: '🔨 Тяжёлый замах (1.6x)', mult: 1.6, isBlock: false, isStun: false },
-                { name: '🛡️ Защитная стойка', mult: 0, isBlock: true, isStun: false }
+                { name: '⚔️ Обычная атака (1.0x)', mult: 1.0, isBlock: false },
+                { name: '🗡️ Быстрый выпад (0.75x)', mult: 0.75, isBlock: false },
+                { name: '🔨 Тяжёлый замах (1.6x)', mult: 1.6, isBlock: false },
+                { name: '🛡️ Защитная стойка', mult: 0, isBlock: true }
             ];
-            if (enemy.isBoss) {
-                choices.push({ name: '💀 СОКРУШЕНИЕ ВРАТ (2.4x)', mult: 2.4, isBlock: false, isStun: false });
-            }
+            if (enemy.isBoss) choices.push({ name: '💀 СОКРУШЕНИЕ ВРАТ (2.4x)', mult: 2.4, isBlock: false });
             return choices[Math.floor(Math.random() * choices.length)];
         }
 
-        // 6. Thinking Timer & Turn Engine
         function stopTurnTimer() {
-            if (combatTimerId) {
-                clearInterval(combatTimerId);
-                combatTimerId = null;
-            }
+            if (combatTimerId) { clearInterval(combatTimerId); combatTimerId = null; }
         }
 
         function startTurnTimer() {
@@ -1335,10 +2150,7 @@
             updateTimerDisplay(TURN_TIME_SEC);
 
             combatTimerId = setInterval(() => {
-                if (!activeCombat) {
-                    stopTurnTimer();
-                    return;
-                }
+                if (!activeCombat) { stopTurnTimer(); return; }
                 const remainingMs = timerEndTimestamp - Date.now();
                 const remainingSec = Math.max(0, remainingMs / 1000);
                 updateTimerDisplay(remainingSec);
@@ -1367,22 +2179,32 @@
             isActionLocked = false;
             setCombatButtonsDisabled(false);
 
-            // Моб заранее выбирает удар на этот ход
             activeCombat.enemy.intent = pickEnemyIntent(activeCombat.enemy);
             const intentBadge = document.getElementById('enemy-intent-badge');
-            if (intentBadge) {
-                intentBadge.textContent = activeCombat.enemy.intent.name;
-            }
+            if (intentBadge) intentBadge.textContent = activeCombat.enemy.intent.name;
 
-            // Обновляем бейдж хода
             const turnBadge = document.getElementById('combat-turn-badge');
-            if (turnBadge) {
-                turnBadge.textContent = `⚔️ ХОД ${activeCombat.turn}`;
-            }
+            if (turnBadge) turnBadge.textContent = `⚔️ ХОД ${activeCombat.turn}`;
 
-            // Восстановление маны по позиции/классу в начале хода
             if (activeCombat.heroMp < computed.maxMp) {
                 activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 5);
+            }
+
+            // Помощь от сопартийцев в бою (случайное пассивное действие)
+            if (state.currentParty && state.currentParty.members.length > 1 && Math.random() < 0.45) {
+                const allies = state.currentParty.members.filter(m => m.id !== 'player_me');
+                if (allies.length > 0) {
+                    const ally = allies[Math.floor(Math.random() * allies.length)];
+                    if (ally.charClass === 'healer') {
+                        const heal = Math.round(computed.maxHp * 0.15);
+                        activeCombat.heroHp = Math.min(computed.maxHp, activeCombat.heroHp + heal);
+                        logCombat(`💚 Сопартиец ${ally.name} восстановил вам +${heal} HP!`, 'log-entry-heal');
+                    } else {
+                        const assistDmg = Math.round(computed.attack * 0.7);
+                        activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - assistDmg);
+                        logCombat(`🤝 Сопартиец ${ally.name} поддержал атаку: нанесено ${assistDmg} урона!`, 'log-entry-qte');
+                    }
+                }
             }
 
             renderCombatUI();
@@ -1390,22 +2212,18 @@
         }
 
         function setCombatButtonsDisabled(disabled) {
-            const btns = [
-                'btn-act-attack', 'btn-act-guard', 
-                'btn-act-skill-1', 'btn-act-skill-2', 'btn-act-skill-3'
-            ];
-            btns.forEach(id => {
+            ['btn-act-attack', 'btn-act-guard', 'btn-act-skill-1', 'btn-act-skill-2', 'btn-act-skill-3'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = disabled;
             });
         }
 
-        // 7. Combat Resolution
         function resolveAction(actionType) {
             if (isActionLocked || !activeCombat) return;
             isActionLocked = true;
             stopTurnTimer();
             setCombatButtonsDisabled(true);
+            triggerHaptic('medium');
 
             const cfg = CLASS_CONFIGS[state.charClass];
             let playerDmg = 0;
@@ -1414,33 +2232,28 @@
             let logMsg = '';
             let logType = '';
 
-            // Handle MP and Player Move Calculation
             if (actionType === 'basic_attack') {
                 playerDmg = computed.attack;
                 logMsg = `⚔️ Вы наносите базовый удар: ${playerDmg} урона.`;
             } else if (actionType === 'guard') {
                 isGuarding = true;
-                activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 15);
-                logMsg = `🛡️ Вы встали в глухую защиту (100% блока) и восстановили +15 MP!`;
+                logMsg = `🛡️ Вы встали в защитную стойку (60% блока)!`;
                 logType = 'log-entry-guard';
             } else if (actionType === 'skill_1') {
                 const sk = cfg.skills[0];
                 mpCost = sk.mp;
-                if (activeCombat.heroMp < mpCost) {
-                    showNotEnoughMp();
-                    return;
-                }
+                if (activeCombat.heroMp < mpCost) { showNotEnoughMp(); return; }
                 activeCombat.heroMp -= mpCost;
                 if (state.charClass === 'tank') {
                     activeCombat.heroDefBuff = true;
                     logMsg = `🛡️ Танк активировал "Укрепление"! Защита повышена.`;
                 } else if (state.charClass === 'healer') {
                     activeCombat.heroMp = Math.min(computed.maxMp, activeCombat.heroMp + 40);
-                    logMsg = `✨ Целитель использовал "Благословение": восстановлено +40 MP!`;
+                    logMsg = `✨ Целитель использовал "Благословение": +40 MP!`;
                     logType = 'log-entry-heal';
                 } else if (state.charClass === 'mage') {
                     playerDmg = Math.round(computed.attack * 1.6 + computed.skillPower);
-                    logMsg = `🔥 Огненная стрела Мага испепеляет цель на ${playerDmg} урона!`;
+                    logMsg = `🔥 Огненная стрела испепеляет цель на ${playerDmg} урона!`;
                 } else if (state.charClass === 'assassin') {
                     playerDmg = Math.round(computed.attack * 1.8);
                     logMsg = `🗡️ Ассасин совершает подлый удар из тени на ${playerDmg} урона!`;
@@ -1448,54 +2261,46 @@
             } else if (actionType === 'skill_2') {
                 const sk = cfg.skills[1];
                 mpCost = sk.mp;
-                if (activeCombat.heroMp < mpCost) {
-                    showNotEnoughMp();
-                    return;
-                }
+                if (activeCombat.heroMp < mpCost) { showNotEnoughMp(); return; }
                 activeCombat.heroMp -= mpCost;
                 if (state.charClass === 'tank') {
                     playerDmg = Math.round(computed.attack * 1.2);
                     activeCombat.reflectActive = true;
-                    logMsg = `💥 Танк наносит ${playerDmg} урона и готовит отражение атаки!`;
+                    logMsg = `💥 Танк наносит ${playerDmg} урона и готовит отражение!`;
                 } else if (state.charClass === 'healer') {
                     const healVal = Math.round(computed.maxHp * 0.3);
                     activeCombat.heroHp = Math.min(computed.maxHp, activeCombat.heroHp + healVal);
-                    logMsg = `💖 Молитва восстановила вам +${healVal} HP!`;
+                    logMsg = `💖 Молитва восстановила +${healVal} HP!`;
                     logType = 'log-entry-heal';
                 } else if (state.charClass === 'mage') {
                     playerDmg = Math.round(computed.attack * 1.3);
                     activeCombat.enemyStunned = true;
-                    logMsg = `❄️ Глубокая Заморозка! Враг получает ${playerDmg} урона и оглушён!`;
+                    logMsg = `❄️ Глубокая Заморозка! Враг оглушён на 1 ход!`;
                 } else if (state.charClass === 'assassin') {
                     playerDmg = Math.round(computed.attack * 1.4);
                     logMsg = `☠️ Клинок с теневым ядом поражает моба на ${playerDmg} урона!`;
                 }
             }
 
-            // Apply Damage Multipliers (Rock-Paper-Scissors & Holy bonus)
             if (playerDmg > 0) {
-                // Rock-Paper-Scissors
                 if (state.charClass === 'tank' && activeCombat.enemy.type === 'assassin') playerDmg = Math.round(playerDmg * 1.5);
                 if (state.charClass === 'assassin' && activeCombat.enemy.type === 'mage') playerDmg = Math.round(playerDmg * 1.5);
                 if (state.charClass === 'mage' && activeCombat.enemy.type === 'tank') playerDmg = Math.round(playerDmg * 1.5);
 
-                // Healer holy damage vs Gate 2 undead
                 if (state.charClass === 'healer' && activeCombat.gateId === 2) {
                     playerDmg = Math.round(playerDmg * 1.35);
                     logMsg += ' (Святой урон +35%!)';
                 }
 
-                // Crit check
                 const isCrit = (Math.random() * 100) < computed.crit;
                 if (isCrit) {
                     playerDmg = Math.round(playerDmg * (computed.critDmg / 100));
                     logMsg += ` ⚡ КРИТИЧЕСКИЙ УДАР!`;
+                    triggerHaptic('heavy');
                 }
 
                 activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - playerDmg);
-                triggerHaptic('impact');
 
-                // Vampirism
                 if (computed.vampirism > 0) {
                     const leech = Math.round(playerDmg * (computed.vampirism / 100));
                     activeCombat.heroHp = Math.min(computed.maxHp, activeCombat.heroHp + leech);
@@ -1505,16 +2310,12 @@
             if (logMsg) logCombat(logMsg, logType);
             renderCombatUI();
 
-            // Check Enemy Death
             if (activeCombat.enemy.hp <= 0) {
-                setTimeout(() => handleStageVictory(), 400);
+                addTimeout(() => handleStageVictory(), 400);
                 return;
             }
 
-            // Resolve Enemy Attack
-            setTimeout(() => {
-                resolveEnemyAttack(false, isGuarding);
-            }, 500);
+            addTimeout(() => { resolveEnemyAttack(false, isGuarding); }, 500);
         }
 
         function showNotEnoughMp() {
@@ -1530,7 +2331,8 @@
 
             if (activeCombat.enemyStunned) {
                 activeCombat.enemyStunned = false;
-                logCombat(`💫 Враг находится в оглушении и пропускает этот ход!`, 'log-entry-guard');
+                logCombat(`💫 Враг находится в оглушении и пропускает ход!`, 'log-entry-guard');
+                triggerHaptic('light');
                 finishTurnStep();
                 return;
             }
@@ -1538,54 +2340,44 @@
             const intent = activeCombat.enemy.intent || { mult: 1.0, isBlock: false };
 
             if (intent.isBlock) {
-                logCombat(`🛡️ Враг встал в защитную стойку и блокирует часть урона.`, 'log-entry-guard');
-                finishTurnStep();
-                return;
-            }
-
-            if (isPlayerGuarding) {
-                logCombat(`🛡️ ПОЛНЫЙ БЛОК (100%)! Вы отразили удар врага без урона!`, 'log-entry-guard');
-                triggerHaptic('success');
+                logCombat(`🛡️ Враг встал в защитную стойку.`, 'log-entry-guard');
+                triggerHaptic('light');
                 finishTurnStep();
                 return;
             }
 
             let rawEnemyDmg = Math.round(activeCombat.enemy.atk * intent.mult);
 
-            // Rock-Paper-Scissors incoming weaknesses
             if (state.charClass === 'tank' && activeCombat.enemy.type === 'mage') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
             if (state.charClass === 'mage' && activeCombat.enemy.type === 'assassin') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
             if (state.charClass === 'assassin' && activeCombat.enemy.type === 'tank') rawEnemyDmg = Math.round(rawEnemyDmg * 1.2);
 
-            // Mitigation by Defense and Damage Resistance
             const mitigated = Math.max(5, rawEnemyDmg - Math.round(computed.defense * 0.4));
-            const finalDmg = Math.max(1, Math.round(mitigated * (1 - computed.dmgResist / 100)));
+            
+            let finalDmg;
+            if (isPlayerGuarding) {
+                finalDmg = Math.max(1, Math.round(mitigated * (1 - computed.dmgResist / 100) * 0.4));
+                logCombat(`🛡️ ЧАСТИЧНЫЙ БЛОК (60%)! Получено ${finalDmg} урона!`, 'log-entry-guard');
+                triggerHaptic('success');
+            } else {
+                finalDmg = Math.max(1, Math.round(mitigated * (1 - computed.dmgResist / 100)));
+                logCombat(`💥 Враг атаковал (${intent.name}): получено ${finalDmg} урона!`, 'log-entry-damage');
+                triggerHaptic('heavy');
+            }
 
             activeCombat.heroHp = Math.max(0, activeCombat.heroHp - finalDmg);
-            logCombat(`💥 Враг атаковал (${intent.name}): получено ${finalDmg} урона!`, 'log-entry-damage');
-            triggerHaptic('error');
 
-            // Tank reflection
             if (activeCombat.reflectActive) {
                 activeCombat.reflectActive = false;
                 const reflected = Math.round(finalDmg * 0.5);
                 activeCombat.enemy.hp = Math.max(0, activeCombat.enemy.hp - reflected);
-                logCombat(`🪞 Отражение вернуло монстру ${reflected} урона!`, 'log-entry-heal');
+                logCombat(`🪞 Отражение вернуло врагу ${reflected} урона!`, 'log-entry-heal');
             }
 
             renderCombatUI();
 
-            // Check Player Death
-            if (activeCombat.heroHp <= 0) {
-                setTimeout(() => handleHeroDefeat(), 400);
-                return;
-            }
-
-            // Check Enemy Death from reflect
-            if (activeCombat.enemy.hp <= 0) {
-                setTimeout(() => handleStageVictory(), 400);
-                return;
-            }
+            if (activeCombat.heroHp <= 0) { addTimeout(() => handleHeroDefeat(), 400); return; }
+            if (activeCombat.enemy.hp <= 0) { addTimeout(() => handleStageVictory(), 400); return; }
 
             finishTurnStep();
         }
@@ -1593,12 +2385,10 @@
         function finishTurnStep() {
             if (!activeCombat) return;
             activeCombat.turn++;
-            setTimeout(() => {
-                startTurn();
-            }, 400);
+            addTimeout(() => { startTurn(); }, 400);
         }
 
-        // 8. QTE Mini-Game (Ultimate Skill 3)
+        // QTE Canvas
         let qtePoints = [];
         let qteProgress = 0;
         let qteTimeout = null;
@@ -1606,47 +2396,45 @@
         function startQteSequence() {
             const cfg = CLASS_CONFIGS[state.charClass];
             const sk = cfg.skills[2];
-            if (activeCombat.heroMp < sk.mp) {
-                showNotEnoughMp();
-                return;
-            }
+            if (activeCombat.heroMp < sk.mp) { showNotEnoughMp(); return; }
 
             isActionLocked = true;
             stopTurnTimer();
             setCombatButtonsDisabled(true);
+            triggerHaptic('medium');
 
             const overlay = document.getElementById('qte-overlay');
             const canvas = document.getElementById('qte-canvas');
             if (!overlay || !canvas) return;
 
             overlay.style.display = 'flex';
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = 300 * dpr;
+            canvas.height = 300 * dpr;
+            canvas.style.width = '300px';
+            canvas.style.height = '300px';
 
-            // Generate 3 sequential nodes
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            const width = 300, height = 300;
+
             qtePoints = [
-                { x: 50, y: height / 2, r: 24, hit: false },
-                { x: width / 2, y: 60, r: 24, hit: false },
-                { x: width - 50, y: height - 60, r: 24, hit: false }
+                { x: 50, y: height / 2, r: 28, hit: false },
+                { x: width / 2, y: 60, r: 28, hit: false },
+                { x: width - 50, y: height - 60, r: 28, hit: false }
             ];
             qteProgress = 0;
             drawQteNodes(ctx);
 
             function drawQteNodes(c) {
                 c.clearRect(0, 0, width, height);
-
-                // Draw connecting track
                 c.beginPath();
                 c.strokeStyle = '#232d4b';
                 c.lineWidth = 6;
                 c.moveTo(qtePoints[0].x, qtePoints[0].y);
-                for (let i = 1; i < qtePoints.length; i++) {
-                    c.lineTo(qtePoints[i].x, qtePoints[i].y);
-                }
+                for (let i = 1; i < qtePoints.length; i++) c.lineTo(qtePoints[i].x, qtePoints[i].y);
                 c.stroke();
 
-                // Draw Nodes
                 qtePoints.forEach((pt, index) => {
                     c.beginPath();
                     c.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
@@ -1656,7 +2444,6 @@
                     c.strokeStyle = pt.hit ? '#00ff88' : (index === qteProgress ? '#ffffff' : '#415a77');
                     c.stroke();
 
-                    // Text
                     c.fillStyle = pt.hit ? '#000' : '#fff';
                     c.font = 'bold 14px sans-serif';
                     c.textAlign = 'center';
@@ -1672,41 +2459,28 @@
                 if (dist <= target.r + 15) {
                     target.hit = true;
                     qteProgress++;
-                    triggerHaptic('impact');
+                    triggerHaptic('light');
                     drawQteNodes(ctx);
-
-                    if (qteProgress >= qtePoints.length) {
-                        finishQte(true);
-                    }
+                    if (qteProgress >= qtePoints.length) finishQte(true);
                 }
             }
 
-            function onTouchMove(e) {
+            canvas.ontouchmove = (e) => {
                 e.preventDefault();
                 const rect = canvas.getBoundingClientRect();
-                const touch = e.touches[0];
-                handlePointerHit(touch.clientX - rect.left, touch.clientY - rect.top);
-            }
+                handlePointerHit(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+            };
 
-            function onMouseMove(e) {
+            canvas.onmousemove = (e) => {
                 if (e.buttons !== 1) return;
                 const rect = canvas.getBoundingClientRect();
                 handlePointerHit(e.clientX - rect.left, e.clientY - rect.top);
-            }
+            };
 
-            canvas.ontouchmove = onTouchMove;
-            canvas.onmousemove = onMouseMove;
-
-            // 4 seconds QTE limit
-            qteTimeout = setTimeout(() => {
-                finishQte(false);
-            }, 4000);
+            qteTimeout = setTimeout(() => finishQte(false), 4000);
 
             function finishQte(success) {
-                if (qteTimeout) {
-                    clearTimeout(qteTimeout);
-                    qteTimeout = null;
-                }
+                if (qteTimeout) { clearTimeout(qteTimeout); qteTimeout = null; }
                 canvas.ontouchmove = null;
                 canvas.onmousemove = null;
                 overlay.style.display = 'none';
@@ -1718,7 +2492,7 @@
 
                 if (success) {
                     ultDmg = Math.round(ultDmg * 1.5);
-                    logCombat(`⚡ ИДЕАЛЬНЫЙ QTE СВАЙП! УЛЬТИМЕЙТ СОКРУШАЕТ НА ${ultDmg} УРОНА!`, 'log-entry-qte');
+                    logCombat(`⚡ ИДЕАЛЬНЫЙ QTE! УЛЬТИМЕЙТ СОКРУШАЕТ НА ${ultDmg} УРОНА!`, 'log-entry-qte');
                     triggerHaptic('success');
                 } else {
                     ultDmg = Math.round(ultDmg * 0.5);
@@ -1730,23 +2504,49 @@
                 renderCombatUI();
 
                 if (activeCombat.enemy.hp <= 0) {
-                    setTimeout(() => handleStageVictory(), 400);
+                    addTimeout(() => handleStageVictory(), 400);
                 } else {
-                    setTimeout(() => resolveEnemyAttack(false, false), 500);
+                    addTimeout(() => resolveEnemyAttack(false, false), 500);
                 }
             }
         }
 
-        // 9. Full HP/MP Restoration & Victory / Defeat Handling
+        function rollDropEquipment(gateId, isBoss) {
+            // В пати шанс дропа выше!
+            const partyCount = state.currentParty ? state.currentParty.members.length : 1;
+            const dropChance = isBoss ? 1.0 : (0.45 + (partyCount - 1) * 0.15);
+            if (!isBoss && Math.random() > dropChance) return null;
+
+            let rarityPool = ['common', 'uncommon'];
+            if (gateId >= 3) rarityPool.push('rare');
+            if (gateId >= 5) rarityPool.push('epic');
+            if (gateId >= 7) rarityPool.push('legendary');
+            if (gateId >= 9) rarityPool.push('unique');
+            if (gateId >= 10 || (isBoss && gateId >= 8)) rarityPool.push('world');
+
+            let rarityKey = rarityPool[Math.floor(Math.random() * rarityPool.length)];
+            if (isBoss) {
+                const bossPool = rarityPool.slice(Math.max(0, rarityPool.length - 3));
+                rarityKey = bossPool[Math.floor(Math.random() * bossPool.length)];
+            }
+
+            const allSlots = ['weapon', 'helmet', 'chest', 'pants', 'boots', 'cloak', 'necklace', 'signet', 'ring1', 'ring2'];
+            const chosenSlot = allSlots[Math.floor(Math.random() * allSlots.length)];
+            const weights = ['light', 'medium', 'heavy'];
+            const weight = ['helmet', 'chest', 'pants', 'boots', 'cloak'].includes(chosenSlot) ? weights[Math.floor(Math.random() * weights.length)] : null;
+            const weaponTypes = ['sword_shield', 'staff', 'dagger'];
+            const wType = chosenSlot === 'weapon' ? weaponTypes[Math.floor(Math.random() * weaponTypes.length)] : null;
+
+            return makeItem(chosenSlot, rarityKey, weight, wType);
+        }
+
         function restoreHeroToFull(silent = false) {
             recalcParameters();
             if (activeCombat) {
                 activeCombat.heroHp = computed.maxHp;
                 activeCombat.heroMp = computed.maxMp;
             }
-            if (!silent) {
-                logCombat(`💚 Здоровье (HP) и Мана (MP) полностью восстановлены (100%)!`, 'log-entry-heal');
-            }
+            if (!silent) logCombat(`💚 HP и MP полностью восстановлены (100%)!`, 'log-entry-heal');
         }
 
         function handleStageVictory() {
@@ -1755,26 +2555,34 @@
 
             const gate = GATES.find(g => g.id === activeCombat.gateId);
             const isBoss = activeCombat.stage === 10;
-            const goldReward = Math.round((25 + (gate.minLv * 8) + (activeCombat.stage * 12)) * (state.charClass === 'healer' ? 1.5 : 1.0));
-            const expReward = 30 + (gate.minLv * 10) + (activeCombat.stage * 15);
+            const partyCount = state.currentParty ? state.currentParty.members.length : 1;
+            const partyRewardMult = 1 + (partyCount - 1) * 0.4; // Бонус золота и опыта в пати
+
+            const goldReward = Math.round((25 + (gate.minLv * 8) + (activeCombat.stage * 12)) * (state.charClass === 'healer' ? 1.5 : 1.0) * partyRewardMult);
+            const expReward = Math.round((30 + (gate.minLv * 10) + (activeCombat.stage * 15)) * partyRewardMult);
 
             state.gold += goldReward;
             state.exp += expReward;
-            logCombat(`🏆 Победа на этапе ${activeCombat.stage}! Награда: +${goldReward} золота, +${expReward} EXP.`, 'log-entry-heal');
+            logCombat(`🏆 Победа на этапе ${activeCombat.stage}! Награда: +${goldReward} золота, +${expReward} EXP ${partyCount > 1 ? '(Рейд-бонус)' : ''}.`, 'log-entry-heal');
             triggerHaptic('success');
 
-            // Level up check
-            checkLevelUp();
+            const drop = rollDropEquipment(activeCombat.gateId, isBoss);
+            if (drop) {
+                state.backpack.push(drop);
+                const rData = RARITIES[drop.rarity];
+                logCombat(`🎁 ВЫПАЛА ЭКИПИРОВКА: ${drop.icon} ${drop.name} [${rData.name}]! Добавлено в рюкзак.`, 'log-entry-qte');
+                triggerHaptic('success');
+            }
 
-            // 100% Full recovery after every round/stage
+            checkLevelUp();
             restoreHeroToFull(false);
             renderWallet();
+            saveCurrentSlot();
 
             if (isBoss) {
                 logCombat(`👑 БОСС ВРАТ ПОВЕРЖЕН! Врата "${gate.name}" полностью зачищены!`, 'log-entry-qte');
-                setTimeout(() => {
-                    exitCombat();
-                }, 1800);
+                triggerHaptic('success');
+                addTimeout(() => exitCombat(), 1800);
             } else {
                 activeCombat.stage++;
                 activeCombat.turn = 1;
@@ -1782,20 +2590,16 @@
                 document.getElementById('combat-stage-counter').textContent = `ЭТАП ${activeCombat.stage}/10`;
                 renderCombatUI();
                 logCombat(`➡️ Переход на ЭТАП ${activeCombat.stage}/10...`, 'log-entry');
-                setTimeout(() => {
-                    startTurn();
-                }, 1000);
+                addTimeout(() => startTurn(), 1000);
             }
         }
 
         function handleHeroDefeat() {
             if (!activeCombat) return;
             stopTurnTimer();
-            logCombat(`💀 Вы пали в бою во Вратах! Отступление в безопасный лагерь...`, 'log-entry-damage');
+            logCombat(`💀 Вы пали в бою во Вратах! Отступление в лагерь...`, 'log-entry-damage');
             triggerHaptic('error');
-            setTimeout(() => {
-                exitCombat();
-            }, 1500);
+            addTimeout(() => exitCombat(), 1500);
         }
 
         function checkLevelUp() {
@@ -1804,7 +2608,7 @@
                 state.level++;
                 state.exp -= neededExp;
                 state.freePoints += 5;
-                logCombat(`🎉 НОВЫЙ УРОВЕНЬ: ${state.level}! Получено +5 очков характеристик!`, 'log-entry-qte');
+                logCombat(`🎉 НОВЫЙ УРОВЕНЬ: ${state.level}! Получено +5 очков!`, 'log-entry-qte');
                 triggerHaptic('success');
                 saveCurrentSlot();
                 renderHeroHeader();
@@ -1812,12 +2616,12 @@
             }
         }
 
-        // 10. Combat Arena View Transitions
         function enterGate(gateId) {
             const gate = GATES.find(g => g.id === gateId);
             if (!gate) return;
             if (state.level < gate.minLv) {
-                alert(`Врата требуют ${gate.minLv} уровень! Ваш уровень: ${state.level}`);
+                showToast(`Требуется ${gate.minLv} уровень!`);
+                triggerHaptic('error');
                 return;
             }
 
@@ -1834,38 +2638,46 @@
                 enemyStunned: false
             };
 
-            // Switch sub-view
+            if (tg?.BackButton) {
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => {
+                    if (confirm('Вы находитесь в бою! Покинуть Врата?')) exitCombat();
+                });
+            }
+
             document.getElementById('view-gates-list').style.display = 'none';
             document.getElementById('view-combat-arena').style.display = 'block';
 
-            // Setup Header in Combat
-            document.getElementById('combat-gate-title').textContent = gate.name;
+            const pCount = state.currentParty ? state.currentParty.members.length : 1;
+            document.getElementById('combat-gate-title').textContent = `${gate.name} ${pCount > 1 ? `[РЕЙД ${pCount}/4]` : ''}`;
             document.getElementById('combat-stage-counter').textContent = `ЭТАП 1/10`;
 
             const logBox = document.getElementById('combat-log-container');
             if (logBox) logBox.innerHTML = '';
             logCombat(`⛩️ Вы вошли во врата: "${gate.name}". Приготовьтесь к бою!`, 'log-entry');
+            if (pCount > 1) logCombat(`🛡️ В составе рейда из ${pCount} охотников. Монстры усилены!`, 'log-entry-qte');
 
-            // 100% full resource restore on entry
             restoreHeroToFull(true);
             renderCombatUI();
             updateClassSkillButtons();
+            triggerHaptic('light');
             startTurn();
         }
 
         function exitCombat() {
-            stopTurnTimer();
-            if (qteTimeout) {
-                clearTimeout(qteTimeout);
-                qteTimeout = null;
+            clearAllTimers();
+            if (tg?.BackButton) {
+                tg.BackButton.hide();
+                tg.BackButton.offClick();
             }
+
+            if (qteTimeout) { clearTimeout(qteTimeout); qteTimeout = null; }
             const qteOverlay = document.getElementById('qte-overlay');
             if (qteOverlay) qteOverlay.style.display = 'none';
 
             activeCombat = null;
             isActionLocked = false;
 
-            // Full restoration upon returning to gate hub
             restoreHeroToFull(true);
             saveCurrentSlot();
 
@@ -1884,25 +2696,17 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // 11. Render Functions & UI Synchronization
         function renderHeroHeader() {
             const rank = getHeroRank(state.level);
             const cfg = CLASS_CONFIGS[state.charClass];
 
-            const nameEl = document.getElementById('hero-header-name');
+            document.getElementById('hero-header-name').textContent = state.name;
             const rankEl = document.getElementById('hero-header-rank');
-            const levelEl = document.getElementById('hero-header-level');
-            const classEl = document.getElementById('hero-header-class');
-            const avEl = document.getElementById('hero-header-avatar');
-
-            if (nameEl) nameEl.textContent = state.name;
-            if (rankEl) {
-                rankEl.textContent = rank.name;
-                rankEl.style.backgroundColor = rank.color;
-            }
-            if (levelEl) levelEl.textContent = state.level;
-            if (classEl) classEl.textContent = cfg.name;
-            if (avEl) avEl.textContent = cfg.icon;
+            rankEl.textContent = rank.name;
+            rankEl.style.backgroundColor = rank.color;
+            document.getElementById('hero-header-level').textContent = state.level;
+            document.getElementById('hero-header-class').textContent = cfg.name;
+            document.getElementById('hero-header-avatar').textContent = cfg.icon;
 
             renderWallet();
         }
@@ -1942,7 +2746,6 @@
         function renderCombatUI() {
             if (!activeCombat) return;
 
-            // Enemy UI
             const en = activeCombat.enemy;
             document.getElementById('enemy-name').textContent = en.name;
             document.getElementById('enemy-avatar-icon').textContent = en.isBoss ? '👑' : (en.type === 'mage' ? '🧙‍♂️' : (en.type === 'assassin' ? '🗡️' : '👹'));
@@ -1950,7 +2753,6 @@
             document.getElementById('enemy-hp-fill').style.width = enHpPercent + '%';
             document.getElementById('enemy-hp-text').textContent = `${en.hp} / ${en.maxHp}`;
 
-            // Hero UI in Combat
             const cfg = CLASS_CONFIGS[state.charClass];
             document.getElementById('hero-combat-name').textContent = state.name;
             document.getElementById('hero-combat-avatar').textContent = cfg.icon;
@@ -1982,24 +2784,63 @@
 
         function renderHeroTab() {
             recalcParameters();
+            const cfg = CLASS_CONFIGS[state.charClass];
+            const rank = getHeroRank(state.level);
 
-            // Update Class Buttons Active State
-            ['tank', 'healer', 'mage', 'assassin'].forEach(cls => {
-                const btn = document.getElementById(`btn-class-${cls}`);
-                if (btn) {
-                    if (state.charClass === cls) btn.classList.add('active');
-                    else btn.classList.remove('active');
+            document.getElementById('hero-doll-class-badge').textContent = cfg.name;
+            document.getElementById('hero-doll-avatar').textContent = cfg.icon;
+            document.getElementById('hero-doll-name').textContent = state.name;
+            const dollRank = document.getElementById('hero-doll-rank');
+            dollRank.textContent = rank.name;
+            dollRank.style.color = rank.color;
+
+            const slotKeys = ['helmet', 'chest', 'pants', 'boots', 'cloak', 'weapon', 'necklace', 'signet', 'ring1', 'ring2'];
+
+            slotKeys.forEach(slot => {
+                const el = document.getElementById(`slot-ui-${slot}`);
+                if (!el) return;
+                const item = state.equipped[slot];
+                if (!item) {
+                    el.innerHTML = `<span style="color:var(--text-muted);">Пусто</span>`;
+                    el.style.borderColor = 'var(--border-color)';
+                    return;
                 }
+
+                const rData = RARITIES[item.rarity];
+                el.style.borderColor = rData.hex;
+                const weightTag = item.weight ? `[${ARMOR_WEIGHTS[item.weight].tag}] ` : '';
+                const hasEnhance = item.enhance > 0;
+
+                el.innerHTML = `
+                    <div class="slot-icon-wrapper" style="border: 1px solid ${rData.hex}; color:${rData.hex};">
+                        ${item.icon}
+                        ${hasEnhance ? `<span class="enhance-badge">+${item.enhance}</span>` : ''}
+                    </div>
+                    <div class="slot-details">
+                        <div class="slot-title" style="color:${rData.hex};">
+                            ${item.name} ${hasEnhance ? `<span style="color:var(--accent-gold); font-size:11px;">+${item.enhance}</span>` : ''}
+                        </div>
+                        <div class="slot-sub">${weightTag}${rData.name}</div>
+                    </div>
+                `;
             });
 
-            // Update Class Description Box
-            const descBox = document.getElementById('class-desc-box');
-            if (descBox) {
-                const cfg = CLASS_CONFIGS[state.charClass];
-                descBox.innerHTML = `<strong>${cfg.name}:</strong> ${cfg.desc}`;
+            const setBanner = document.getElementById('set-bonus-banner');
+            const setBonus = getArmorSetBonus();
+            if (setBonus.active) {
+                setBanner.className = 'set-bonus-banner set-bonus-active';
+                setBanner.innerHTML = `
+                    <div style="font-weight:800; color:var(--accent-green);">✨ АКТИВЕН: ${setBonus.name}</div>
+                    <div style="font-size:10px; margin-top:2px;">${setBonus.desc}</div>
+                `;
+            } else {
+                setBanner.className = 'set-bonus-banner set-bonus-inactive';
+                setBanner.innerHTML = `
+                    <div style="font-weight:700;">⚠️ ${setBonus.name}</div>
+                    <div style="font-size:10px; margin-top:2px;">${setBonus.desc}</div>
+                `;
             }
 
-            // Stat Steppers
             const list = document.getElementById('stat-allocators-list');
             if (list) {
                 list.innerHTML = '';
@@ -2038,67 +2879,128 @@
                 document.getElementById('btn-cancel-stats').disabled = pendingSum <= 0;
             }
 
-            // 13 Parameters Grid
             const pGrid = document.getElementById('parameters-display-grid');
             if (pGrid) {
-                pGrid.innerHTML = `
-                    <div class="parameter-badge"><span class="param-name">Атака:</span><span class="param-val">${computed.attack}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Защита:</span><span class="param-val">${computed.defense}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Крит шанс:</span><span class="param-val">${computed.crit}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Сила крита:</span><span class="param-val">${computed.critDmg}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Точность:</span><span class="param-val">${computed.accuracy}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Уклонение:</span><span class="param-val">${computed.evasion}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Сопротивление:</span><span class="param-val">${computed.dmgResist}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Скорость:</span><span class="param-val">${computed.speed}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Реакция:</span><span class="param-val">${computed.reaction}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Пробитие:</span><span class="param-val">${computed.penetration}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Навыки (Сила):</span><span class="param-val">${computed.skillPower}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Вампиризм:</span><span class="param-val">${computed.vampirism}%</span></div>
-                    <div class="parameter-badge"><span class="param-name">Макс. Мана:</span><span class="param-val">${computed.maxMp}</span></div>
-                    <div class="parameter-badge"><span class="param-name">Макс. HP:</span><span class="param-val">${computed.maxHp}</span></div>
-                `;
+                const baseStats = state.stats;
+                const baseComputed = calculateStatsEngine(baseStats);
+                const currComputed = computed;
+
+                const paramList = [
+                    { key: 'attack', label: 'Атака', unit: '' },
+                    { key: 'defense', label: 'Защита', unit: '' },
+                    { key: 'maxHp', label: 'Макс. HP', unit: '' },
+                    { key: 'maxMp', label: 'Макс. Мана', unit: '' },
+                    { key: 'crit', label: 'Крит шанс', unit: '%' },
+                    { key: 'critDmg', label: 'Сила крита', unit: '%' },
+                    { key: 'accuracy', label: 'Точность', unit: '%' },
+                    { key: 'evasion', label: 'Уклонение', unit: '%' },
+                    { key: 'dmgResist', label: 'Сопротивление', unit: '%' },
+                    { key: 'speed', label: 'Скорость', unit: '' },
+                    { key: 'reaction', label: 'Реакция', unit: '' },
+                    { key: 'penetration', label: 'Пробитие', unit: '%' },
+                    { key: 'skillPower', label: 'Сила навыков', unit: '' },
+                    { key: 'vampirism', label: 'Вампиризм', unit: '%' }
+                ];
+
+                pGrid.innerHTML = paramList.map(p => {
+                    const val = currComputed[p.key];
+                    const diff = currComputed[p.key] - baseComputed[p.key];
+                    const diffHtml = diff > 0 ? `<span class="param-diff-green">(+${diff}${p.unit})</span>` : '';
+                    return `
+                        <div class="parameter-badge">
+                            <span class="param-name">${p.label}:</span>
+                            <span class="param-val">${val}${p.unit}${diffHtml}</span>
+                        </div>
+                    `;
+                }).join('');
             }
         }
 
         function renderForgeTab() {
-            const container = document.getElementById('forge-items-container');
-            if (!container) return;
-            container.innerHTML = '';
+            const forgeContainer = document.getElementById('forge-upgrade-container');
+            if (forgeContainer) {
+                forgeContainer.innerHTML = '';
+                const slotLabels = {
+                    weapon: 'Оружие', helmet: 'Шлем', chest: 'Туловище', pants: 'Штаны', boots: 'Ботинки',
+                    cloak: 'Плащ', necklace: 'Ожерелье', signet: 'Перстень', ring1: 'Кольцо 1', ring2: 'Кольцо 2'
+                };
 
-            const items = [
-                { key: 'weapon', name: 'Оружие Охотника', icon: '🗡️', stat: '+8 Атака' },
-                { key: 'armor', name: 'Теневой Доспех', icon: '🥋', stat: '+7 Защита' },
-                { key: 'helmet', name: 'Шлем Проницательности', icon: '🪖', stat: '+1.5% Крит' },
-                { key: 'ring', name: 'Перстень Монарха', icon: '💍', stat: '+25 MP' }
-            ];
+                Object.keys(state.equipped).forEach(slotKey => {
+                    const item = state.equipped[slotKey];
+                    if (!item) return;
+                    const rData = RARITIES[item.rarity];
+                    const cost = Math.round(50 * Math.pow(1.35, item.enhance) * rData.costMult);
+                    const canAfford = state.gold >= cost;
 
-            items.forEach(it => {
-                const level = state.equip[it.key];
-                const cost = Math.round(50 * Math.pow(1.35, level));
-                const canAfford = state.gold >= cost;
-
-                const row = document.createElement('div');
-                row.className = 'forge-item';
-                row.innerHTML = `
-                    <div class="forge-info">
-                        <div class="forge-icon">${it.icon}</div>
-                        <div>
-                            <div style="font-weight:700; font-size:13px;">${it.name} (+${level})</div>
-                            <div style="font-size:11px; color:var(--text-muted);">${it.stat} за уровень</div>
+                    const row = document.createElement('div');
+                    row.className = 'forge-slot-row';
+                    row.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-size:18px;">${item.icon}</span>
+                            <div>
+                                <div style="font-size:12px; font-weight:700; color:${rData.hex};">
+                                    ${slotLabels[slotKey]}: ${item.name} (+${item.enhance})
+                                </div>
+                                <div style="font-size:9px; color:var(--text-muted);">${rData.name} • +10% к статам слота</div>
+                            </div>
                         </div>
-                    </div>
-                    <button class="btn-upgrade" ${canAfford ? '' : 'disabled'} onclick="window.game.upgradeEquipment('${it.key}')">
-                        +1 за 🪙${cost}
-                    </button>
-                `;
-                container.appendChild(row);
-            });
-        }
+                        <button class="btn-upgrade" ${canAfford ? '' : 'disabled'} onclick="window.game.enhanceSlot('${slotKey}')">
+                            Заточить (+1) • 🪙${cost}
+                        </button>
+                    `;
+                    forgeContainer.appendChild(row);
+                });
+            }
 
-        function renderPartyTab() {
-            const badge = document.getElementById('party-tactic-badge');
-            if (badge) {
-                badge.textContent = state.tactic === 'vanguard' ? 'АВАНГАРД (+15% Защита)' : 'АРЬЕРГАРД (+15% Атака)';
+            const backpackContainer = document.getElementById('backpack-grid-container');
+            const counterText = document.getElementById('backpack-counter-text');
+            if (backpackContainer) {
+                backpackContainer.innerHTML = '';
+                counterText.textContent = `${state.backpack.length} шт.`;
+
+                if (state.backpack.length === 0) {
+                    backpackContainer.innerHTML = `
+                        <div style="text-align:center; padding:16px; color:var(--text-muted); font-size:12px;">
+                            Рюкзак пуст. Проходите Врата для получения редких предметов!
+                        </div>
+                    `;
+                    return;
+                }
+
+                state.backpack.forEach(item => {
+                    const rData = RARITIES[item.rarity];
+                    const card = document.createElement('div');
+                    card.className = 'backpack-card';
+                    card.style.borderColor = rData.hex;
+
+                    const cfg = CLASS_CONFIGS[state.charClass];
+                    const isWeapon = item.slot === 'weapon';
+                    const canEquip = !isWeapon || item.weaponType === cfg.weaponType;
+
+                    let statText = Object.entries(item.stats).map(([k, v]) => `+${v} ${k.toUpperCase()}`).join(', ');
+                    const weightTag = item.weight ? `[${ARMOR_WEIGHTS[item.weight].name}] ` : '';
+
+                    card.innerHTML = `
+                        <div class="backpack-card-info">
+                            <span style="font-size:20px;">${item.icon}</span>
+                            <div>
+                                <div style="font-size:12px; font-weight:700; color:${rData.hex};">
+                                    ${weightTag}${item.name} (+${item.enhance})
+                                </div>
+                                <div style="font-size:10px; color:var(--text-muted);">${rData.name} • ${statText}</div>
+                            </div>
+                        </div>
+                        <div class="backpack-card-actions">
+                            <button class="btn-equip" ${canEquip ? '' : 'disabled'} onclick="window.game.equipFromBackpack('${item.uid}')">
+                                ${canEquip ? 'Надеть' : 'Чужой класс'}
+                            </button>
+                            <button class="btn-sell" onclick="window.game.sellFromBackpack('${item.uid}')">
+                                🪙${item.basePrice}
+                            </button>
+                        </div>
+                    `;
+                    backpackContainer.appendChild(card);
+                });
             }
         }
 
@@ -2118,72 +3020,220 @@
                 }
             });
 
-            const hapBtn = document.getElementById('btn-toggle-haptic');
-            if (hapBtn) {
-                hapBtn.textContent = state.haptics ? 'ВКЛ' : 'ВЫКЛ';
-                hapBtn.style.color = state.haptics ? 'var(--accent-green)' : 'var(--accent-red)';
+            ['tank', 'healer', 'mage', 'assassin'].forEach(cls => {
+                const btn = document.getElementById(`btn-class-${cls}`);
+                if (btn) {
+                    if (state.charClass === cls) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+
+            const descBox = document.getElementById('class-desc-box');
+            if (descBox) {
+                const cfg = CLASS_CONFIGS[state.charClass];
+                descBox.innerHTML = `<strong>${cfg.name}:</strong> ${cfg.desc}`;
             }
         }
 
-        // 12. Global Public API for Inline Event Handlers
+        // =====================================================================
+        // PUBLIC API (WINDOW.GAME)
+        // =====================================================================
         window.game = {
-            // Tab Switcher
             switchTab: function (tabId) {
                 if (activeCombat) {
-                    const confirmLeave = confirm('Вы находитесь в бою! Выйти из Врат обратно в лагерь?');
-                    if (confirmLeave) {
-                        exitCombat();
-                    } else {
-                        return;
-                    }
+                    if (!confirm('Вы находитесь в бою! Покинуть Врата?')) return;
+                    exitCombat();
                 }
 
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.nav-button').forEach(el => el.classList.remove('active'));
 
-                const targetTab = document.getElementById(`tab-tab-${tabId}`) || document.getElementById(`tab-${tabId}`);
+                const targetTab = document.getElementById(`tab-${tabId}`);
                 if (targetTab) targetTab.classList.add('active');
 
-                // Update bottom nav highlights
                 const navIndex = ['gates', 'party', 'forge', 'hero', 'more'].indexOf(tabId);
                 const navButtons = document.querySelectorAll('.bottom-nav .nav-button');
                 if (navButtons[navIndex]) navButtons[navIndex].classList.add('active');
 
-                triggerHaptic('light');
-
-                // Re-render specific tab contents
                 if (tabId === 'gates') renderGatesList();
                 if (tabId === 'hero') renderHeroTab();
                 if (tabId === 'forge') renderForgeTab();
-                if (tabId === 'party') renderPartyTab();
+                if (tabId === 'party') renderPartyTabSystem();
                 if (tabId === 'more') renderMoreTab();
+                
+                triggerHaptic('light');
             },
 
-            // Gate & Combat controls
-            enterGate: function (gateId) {
-                enterGate(gateId);
+            // --- Party Sub-navigation & Handlers ---
+            switchPartySubView: function (subView) {
+                activePartyView = subView;
+                renderPartyTabSystem();
+                triggerHaptic('light');
             },
 
-            exitCombat: function () {
-                exitCombat();
-            },
+            quickJoinParty: function () {
+                const playerLv = state.level;
+                // Ищем подходящие лобби: разница в уровне <= 10, открытые, есть места
+                const matching = simulatedLobbies.filter(l => {
+                    const diff = Math.abs(l.leaderLevel - playerLv);
+                    return diff <= 10 && !l.isPrivate && l.members.length < 4;
+                });
 
-            handlePlayerAction: function (action) {
-                if (action === 'skill_3') {
-                    startQteSequence();
-                } else {
-                    resolveAction(action);
+                if (matching.length === 0) {
+                    // Если нет подходящих, авто-создаем наивысшее доступное пати
+                    const highestGate = [...GATES].reverse().find(g => playerLv >= g.minLv) || GATES[0];
+                    window.game.createParty(highestGate.id, true);
+                    showToast(`Создано быстрое пати на ${highestGate.name}!`);
+                    return;
                 }
+
+                // Сортируем: берем лобби с наивысшим GateID и уровнем
+                matching.sort((a, b) => (b.gateId - a.gateId) || (b.leaderLevel - a.leaderLevel));
+                const best = matching[0];
+
+                this.joinExistingParty(best.id);
             },
 
-            // Hero Progression & Stats Controls
+            refreshLobbies: function () {
+                generateSimulatedLobbies();
+                renderPartyBrowseView();
+                triggerHaptic('medium');
+                showToast('Список групп обновлен');
+            },
+
+            joinExistingParty: function (lobbyId) {
+                const lobby = simulatedLobbies.find(l => l.id === lobbyId);
+                if (!lobby) return;
+
+                const lvDiff = Math.abs(lobby.leaderLevel - state.level);
+                if (lvDiff > 10) {
+                    showToast('Разница в уровне превышает 10 уровней!');
+                    triggerHaptic('error');
+                    return;
+                }
+
+                state.currentParty = {
+                    id: lobby.id,
+                    name: `Рейд: ${lobby.gateName}`,
+                    gateId: lobby.gateId,
+                    leaderId: lobby.members[0].id,
+                    isPrivate: lobby.isPrivate,
+                    autoAccept: lobby.autoAccept,
+                    members: [
+                        ...lobby.members,
+                        { id: 'player_me', name: state.name, level: state.level, charClass: state.charClass, isLeader: false }
+                    ]
+                };
+
+                activePartyView = 'manage';
+                saveCurrentSlot();
+                renderPartyTabSystem();
+                triggerHaptic('success');
+                showToast(`Вы вступили в пати: ${lobby.gateName}!`);
+            },
+
+            createParty: function (forcedGateId = null, autoFill = false) {
+                const gateId = forcedGateId ? parseInt(forcedGateId) : parseInt(document.getElementById('party-gate-select').value);
+                const gate = GATES.find(g => g.id === gateId) || GATES[0];
+
+                const myMember = { id: 'player_me', name: state.name, level: state.level, charClass: state.charClass, isLeader: true };
+                const members = [myMember];
+
+                if (autoFill) {
+                    const classes = ['tank', 'healer', 'mage', 'assassin'];
+                    const botCount = Math.floor(Math.random() * 2) + 2; // 2-3 союзника
+                    for (let i = 0; i < botCount; i++) {
+                        const bClass = classes[Math.floor(Math.random() * classes.length)];
+                        const bLv = Math.max(1, state.level + Math.floor(Math.random() * 5) - 2);
+                        members.push({
+                            id: 'bot_' + Math.random().toString(36).substring(2,7),
+                            name: BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)] + ` [${bLv}]`,
+                            level: bLv,
+                            charClass: bClass,
+                            isLeader: false
+                        });
+                    }
+                }
+
+                state.currentParty = {
+                    id: 'my_party_' + Date.now(),
+                    name: `Рейд: ${gate.name}`,
+                    gateId: gate.id,
+                    leaderId: 'player_me',
+                    isPrivate: false,
+                    autoAccept: true,
+                    members: members
+                };
+
+                activePartyView = 'manage';
+                saveCurrentSlot();
+                renderPartyTabSystem();
+                triggerHaptic('success');
+                showToast(`Пати создано!`);
+            },
+
+            kickPartyMember: function (memberId) {
+                if (!state.currentParty || state.currentParty.leaderId !== 'player_me') return;
+                state.currentParty.members = state.currentParty.members.filter(m => m.id !== memberId);
+                saveCurrentSlot();
+                renderPartyManageView();
+                triggerHaptic('warning');
+                showToast('Участник исключён из пати');
+            },
+
+            disbandParty: function () {
+                if (!confirm('Вы уверены, что хотите распустить пати?')) return;
+                state.currentParty = null;
+                activePartyView = 'quick';
+                saveCurrentSlot();
+                renderPartyTabSystem();
+                triggerHaptic('error');
+                showToast('Пати распущено');
+            },
+
+            togglePartySettings: function () {
+                const panel = document.getElementById('party-settings-panel');
+                if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+                triggerHaptic('light');
+            },
+
+            updatePartySettings: function () {
+                if (!state.currentParty) return;
+                state.currentParty.autoAccept = document.getElementById('party-setting-autoaccept').checked;
+                state.currentParty.isPrivate = document.getElementById('party-setting-private').checked;
+                saveCurrentSlot();
+                showToast('Настройки пати сохранены');
+            },
+
+            startPartyRaid: function () {
+                if (!state.currentParty) return;
+                window.game.enterGate(state.currentParty.gateId);
+            },
+
+            // --- Base Game Actions ---
+            enterGate: (id) => enterGate(id),
+            exitCombat: () => exitCombat(),
+            handlePlayerAction: (act) => act === 'skill_3' ? startQteSequence() : resolveAction(act),
+
             switchClass: function (newClass) {
                 if (!CLASS_CONFIGS[newClass]) return;
+                if (state.charClass === newClass) return;
+                
                 state.charClass = newClass;
+                const reqWType = CLASS_CONFIGS[newClass].weaponType;
+
+                if (state.equipped.weapon.weaponType !== reqWType) {
+                    state.backpack.push(state.equipped.weapon);
+                    state.equipped.weapon = makeItem('weapon', 'common', null, reqWType);
+                    showToast(`Оружие заменено на ${CLASS_CONFIGS[newClass].weaponName}`);
+                }
+
                 saveCurrentSlot();
+                recalcParameters();
                 renderHeroHeader();
                 renderHeroTab();
-                triggerHaptic('light');
+                renderMoreTab();
+                triggerHaptic('medium');
             },
 
             adjustStat: function (statKey, delta) {
@@ -2191,12 +3241,11 @@
                 const available = state.freePoints - pendingSum;
 
                 if (delta > 0 && available <= 0) {
+                    showToast('Нет свободных очков!');
                     triggerHaptic('warning');
                     return;
                 }
-                if (delta < 0 && pendingAlloc[statKey] <= 0) {
-                    return;
-                }
+                if (delta < 0 && pendingAlloc[statKey] <= 0) return;
 
                 pendingAlloc[statKey] += delta;
                 triggerHaptic('light');
@@ -2216,85 +3265,141 @@
                 renderHeroHeader();
                 renderHeroTab();
                 triggerHaptic('success');
+                showToast('Характеристики обновлены!');
             },
 
             cancelPendingStats: function () {
                 pendingAlloc = { str: 0, agi: 0, end: 0, int: 0, per: 0 };
-                triggerHaptic('light');
                 renderHeroTab();
+                triggerHaptic('light');
             },
 
-            // Forge Upgrades
-            upgradeEquipment: function (itemKey) {
-                const currentLevel = state.equip[itemKey];
-                const cost = Math.round(50 * Math.pow(1.35, currentLevel));
+            enhanceSlot: function (slotKey) {
+                const item = state.equipped[slotKey];
+                if (!item) return;
+                const rData = RARITIES[item.rarity];
+                const cost = Math.round(50 * Math.pow(1.35, item.enhance) * rData.costMult);
+
                 if (state.gold < cost) {
+                    showToast('Недостаточно золота!');
                     triggerHaptic('error');
-                    alert('Недостаточно золота для ковки!');
                     return;
                 }
 
                 state.gold -= cost;
-                state.equip[itemKey]++;
+                item.enhance++;
                 saveCurrentSlot();
                 recalcParameters();
                 renderWallet();
                 renderForgeTab();
                 renderHeroHeader();
                 triggerHaptic('success');
+                showToast(`${item.name} усилен до +${item.enhance}!`);
             },
 
-            // Tactics & Party
-            setTactic: function (tacticType) {
-                state.tactic = tacticType;
-                saveCurrentSlot();
-                recalcParameters();
-                renderPartyTab();
-                triggerHaptic('light');
-                alert(`Тактика изменена на: ${tacticType === 'vanguard' ? 'Авангард (+15% Защиты)' : 'Арьергард (+15% Атаки)'}`);
-            },
+            equipFromBackpack: function (uid) {
+                const index = state.backpack.findIndex(i => i.uid === uid);
+                if (index === -1) return;
 
-            // Multi-slot management
-            changeSlot: function (slotId) {
-                if (activeCombat) {
-                    alert('Завершите или покиньте бой перед сменой профиля!');
+                const newItem = state.backpack[index];
+                const targetSlot = newItem.slot;
+                const cfg = CLASS_CONFIGS[state.charClass];
+
+                if (targetSlot === 'weapon' && newItem.weaponType !== cfg.weaponType) {
+                    showToast(`Только ${cfg.weaponName}!`);
+                    triggerHaptic('error');
                     return;
                 }
-                loadSlot(slotId);
+
+                const oldItem = state.equipped[targetSlot];
+                state.equipped[targetSlot] = newItem;
+                state.backpack.splice(index, 1);
+                if (oldItem) state.backpack.push(oldItem);
+
+                saveCurrentSlot();
+                recalcParameters();
+                renderHeroTab();
+                renderForgeTab();
+                triggerHaptic('success');
+                showToast(`${newItem.name} надето!`);
+            },
+
+            sellFromBackpack: function (uid) {
+                const index = state.backpack.findIndex(i => i.uid === uid);
+                if (index === -1) return;
+
+                const item = state.backpack[index];
+                const sellPrice = item.basePrice;
+                state.gold += sellPrice;
+                state.backpack.splice(index, 1);
+
+                saveCurrentSlot();
+                renderWallet();
+                renderForgeTab();
+                triggerHaptic('medium');
+                showToast(`Продано за ${sellPrice} 🪙`);
+            },
+
+            changeSlot: async function (slotId) {
+                if (activeCombat) {
+                    showToast('Завершите бой!');
+                    triggerHaptic('error');
+                    return;
+                }
+                if (currentSlot === slotId) return;
+                
+                await loadSlot(slotId);
                 renderHeroHeader();
                 renderGatesList();
                 renderMoreTab();
-                triggerHaptic('success');
+                triggerHaptic('medium');
+                showToast(`Слот ${slotId} загружен`);
             },
 
-            resetCurrentSlotData: function () {
-                const confirmReset = confirm(`Вы уверены, что хотите полностью стереть прогресс Слота ${currentSlot}?`);
-                if (!confirmReset) return;
-                localStorage.removeItem(`sl_save_slot_${currentSlot}`);
-                loadSlot(currentSlot);
+            resetCurrentSlotData: async function () {
+                if (!confirm(`Стереть прогресс Слота ${currentSlot}?`)) return;
+                await cloudRemove(currentSlot);
+                await loadSlot(currentSlot);
                 renderHeroHeader();
                 renderGatesList();
                 renderMoreTab();
                 triggerHaptic('warning');
-            },
-
-            toggleHaptic: function () {
-                state.haptics = !state.haptics;
-                saveCurrentSlot();
-                renderMoreTab();
-                triggerHaptic('light');
+                showToast('Слот сброшен');
             }
         };
 
-        // 13. Application Boot
-        loadSlot(1);
-        renderHeroHeader();
-        renderGatesList();
-        renderForgeTab();
-        renderHeroTab();
-        renderPartyTab();
-        renderMoreTab();
+        // Инициализация приложения
+        async function initApp() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            try {
+                await loadSlot(1);
+            } catch (e) {
+                console.warn('Init slot error:', e);
+            }
+            
+            generateSimulatedLobbies();
+            renderHeroHeader();
+            renderGatesList();
+            renderForgeTab();
+            renderHeroTab();
+            renderPartyTabSystem();
+            renderMoreTab();
+            
+            if (loadingOverlay) {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => { loadingOverlay.style.display = 'none'; }, 300);
+            }
+            
+            if (tg?.BackButton) {
+                tg.BackButton.onClick(() => {
+                    if (activeCombat && confirm('Вы находитесь в бою! Покинуть Врата?')) {
+                        exitCombat();
+                    }
+                });
+            }
+        }
 
+        initApp();
     })();
     </script>
 </body>
